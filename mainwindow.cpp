@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include "startdatamodel.h"
 static std::shared_ptr<QtNodes::DataModelRegistry> registerDataModels();
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -19,7 +21,7 @@ MainWindow::~MainWindow()
 static std::shared_ptr<QtNodes::DataModelRegistry> registerDataModels()
 {
     auto ret = std::make_shared<QtNodes::DataModelRegistry>();
-
+    ret->registerModel<StartDataModel>("Start");
 
 
     return ret;
