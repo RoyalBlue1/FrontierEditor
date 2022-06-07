@@ -2,54 +2,45 @@
 #define STARTDATAMODEL_H
 
 #include "nodes/NodeDataModel.hpp"
+#include "ExecutionData.h"
 
-class StartDataModel : public NodeDataModel
+class StartDataModel : public QtNodes::NodeDataModel
 {
     Q_OBJECT
 public:
     StartDataModel();
-    QString
-    caption() const override
+
+    QString caption() const override
     { return QStringLiteral("Start Wave"); }
 
-    bool
-    captionVisible() const override
+    bool captionVisible() const override
     { return true; }
 
-    QString
-    name() const override
+    QString name() const override
     { return QStringLiteral("WaveStart"); }
-public:
 
-    QJsonObject
-    save() const override;
+    QWidget *embeddedWidget() override { return nullptr; }
 
-    void
-    restore(QJsonObject const &p) override;
 public:
 
     unsigned int
-    nPorts(PortType portType) const override;
+    nPorts(QtNodes::PortType portType) const override;
 
-    NodeDataType
-    dataType(PortType portType, PortIndex portIndex) const override;
+    QtNodes::NodeDataType
+    dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
-    std::shared_ptr<NodeData>
-    outData(PortIndex port) override;
+    std::shared_ptr<QtNodes::NodeData>
+    outData(QtNodes::PortIndex port) override;
 
     void
-    setInData(std::shared_ptr<NodeData>, int) override
+    setInData(std::shared_ptr<QtNodes::NodeData>, int) override
     { }
 
-    QWidget *
-    embeddedWidget() override { return _lineEdit; }
 
-private Q_SLOTS:
-
-  void
-  onTextEdited(QString const &string);
 
 private:
+
+  std::shared_ptr<ExecutionData> _execution;
 };
 
 #endif // STARTDATAMODEL_H

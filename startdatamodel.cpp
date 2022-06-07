@@ -7,17 +7,17 @@ StartDataModel::StartDataModel()
 
 unsigned int
 StartDataModel::
-nPorts(PortType portType) const
+nPorts(QtNodes::PortType portType) const
 {
   unsigned int result = 1;
 
   switch (portType)
   {
-    case PortType::In:
+    case QtNodes::PortType::In:
       result = 0;
       break;
 
-    case PortType::Out:
+    case QtNodes::PortType::Out:
       result = 1;
 
     default:
@@ -26,26 +26,17 @@ nPorts(PortType portType) const
 
   return result;
 }
-QJsonObject
+
+QtNodes::NodeDataType
 StartDataModel::
-save() const
+dataType(QtNodes::PortType, QtNodes::PortIndex) const
 {
-  QJsonObject modelJson = NodeDataModel::save();
-
-
-  return modelJson;
+  return ExecutionData().type();
 }
 
 
-void
-StartDataModel::
-restore(QJsonObject const &p)
+std::shared_ptr<QtNodes::NodeData>
+StartDataModel::outData(QtNodes::PortIndex)
 {
-
-}
-
-std::shared_ptr<NodeData>
-StartDataModel::outData(PortIndex)
-{
-    st
+    return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 }

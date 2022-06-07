@@ -21,7 +21,7 @@ public:
                          "Execution",QColor(0,255,0)};
     }
 
-    QStringList execution() const
+    int execution() const
     { return 1; } //will contain data of previous object
 
 
