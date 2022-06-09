@@ -8,6 +8,7 @@
 #include "nodes/ConnectionStyle.hpp"
 #include "nodes/TypeConverter.hpp"
 #include "nodes/DataModelRegistry.hpp"
+#include "nodes/ConnectionStyle.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

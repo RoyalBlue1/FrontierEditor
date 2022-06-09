@@ -9,9 +9,10 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 DEFINES += NODE_EDITOR_STATIC
 SOURCES += \
+    enddatamodel.cpp \
     main.cpp \
     mainwindow.cpp \
-    positionhandler.cpp \
+    #positionhandler.cpp \
     nodes/Connection.cpp \
     nodes/ConnectionBlurEffect.cpp \
     nodes/ConnectionGeometry.cpp \
@@ -33,13 +34,18 @@ SOURCES += \
     nodes/NodeStyle.cpp \
     nodes/Properties.cpp \
     nodes/StyleCollection.cpp \
-    startdatamodel.cpp
+    spawnarctitandatamodel.cpp \
+    spawnnuketitandatamodel.cpp \
+    splitexecutiondatamodel.cpp \
+    startdatamodel.cpp \
+    waitfordeathdatamodel.cpp
 
 HEADERS += \
     EntityData.h \
     ExecutionData.h \
+    enddatamodel.h \
     mainwindow.h \
-    positionhandler.h \
+    #positionhandler.h \
     nodes/Compiler.hpp \
     nodes/Connection.hpp \
     nodes/ConnectionBlurEffect.hpp \
@@ -73,7 +79,11 @@ HEADERS += \
     nodes/Style.hpp \
     nodes/StyleCollection.hpp \
     nodes/TypeConverter.hpp \
-    startdatamodel.h
+    spawnarctitandatamodel.h \
+    spawnnuketitandatamodel.h \
+    splitexecutiondatamodel.h \
+    startdatamodel.h \
+    waitfordeathdatamodel.h
 
 
 
