@@ -1,23 +1,23 @@
-#ifndef STARTDATAMODEL_H
-#define STARTDATAMODEL_H
+#ifndef ENDDATAMODEL_H
+#define ENDDATAMODEL_H
 
 #include "nodes/NodeDataModel.hpp"
 #include "ExecutionData.h"
 
-class StartDataModel : public QtNodes::NodeDataModel
+class EndDataModel : public QtNodes::NodeDataModel
 {
     Q_OBJECT
 public:
-    StartDataModel();
+    EndDataModel();
 
     QString caption() const override
-    { return QStringLiteral("Start Wave"); }
+    { return QStringLiteral("End Wave"); }
 
     bool captionVisible() const override
     { return true; }
 
     QString name() const override
-    { return QStringLiteral("WaveStart"); }
+    { return QStringLiteral("WaveEnd"); }
 
     QWidget *embeddedWidget() override { return nullptr; }
 
@@ -30,21 +30,25 @@ public:
     dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
     std::shared_ptr<QtNodes::NodeData>
-    outData(QtNodes::PortIndex port) override;
+    outData(QtNodes::PortIndex port) override
+    {
+        return std::static_pointer_cast<QtNodes::NodeData>(_execution);
+    }
 
     void
     setInData(std::shared_ptr<QtNodes::NodeData>, int) override
     { }
 
     ConnectionPolicy
-    portOutConnectionPolicy(QtNodes::PortIndex) const override
+    portInConnectionPolicy(QtNodes::PortIndex) const override
     {
-      return ConnectionPolicy::One;
+      return ConnectionPolicy::Many;
     }
+
 
 private:
 
   std::shared_ptr<ExecutionData> _execution;
 };
 
-#endif // STARTDATAMODEL_H
+#endif // ENDDATAMODEL_H

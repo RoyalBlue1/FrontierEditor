@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 DEFINES += NODE_EDITOR_STATIC
 SOURCES += \
+    enddatamodel.cpp \
     main.cpp \
     mainwindow.cpp \
     mapmarker.cpp \
@@ -35,7 +36,11 @@ SOURCES += \
     nodes/Properties.cpp \
     nodes/StyleCollection.cpp \
     positionmodel.cpp \
-    startdatamodel.cpp
+    spawnarctitandatamodel.cpp \
+    spawnnuketitandatamodel.cpp \
+    splitexecutiondatamodel.cpp \
+    startdatamodel.cpp \
+    waitfordeathdatamodel.cpp
 
 HEADERS += \
     EntityData.h \
@@ -44,6 +49,8 @@ HEADERS += \
     mainwindow.h \
     mapmarker.h \
     minimapgraphicsview.h \
+    enddatamodel.h \
+    mainwindow.h \
     nodes/Compiler.hpp \
     nodes/Connection.hpp \
     nodes/ConnectionBlurEffect.hpp \
@@ -79,7 +86,12 @@ HEADERS += \
     nodes/TypeConverter.hpp \
     positionmodel.h \
     startdatamodel.h \
-    util.h
+    util.h \ 
+    spawnarctitandatamodel.h \
+    spawnnuketitandatamodel.h \
+    splitexecutiondatamodel.h \
+    startdatamodel.h \
+    waitfordeathdatamodel.h
 
 
 

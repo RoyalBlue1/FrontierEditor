@@ -11,6 +11,7 @@
 #include "nodes/TypeConverter.hpp"
 #include "nodes/DataModelRegistry.hpp"
 #include "positionmodel.h"
+#include "nodes/ConnectionStyle.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
