@@ -1,9 +1,10 @@
 #include "mapmarker.h"
 
-MapMarker::MapMarker(QVector3D coords, QPointF minimapCoords, MarkerType type)
+MapMarker::MapMarker(QVector3D coords, GameMap map, MarkerType type)
 {
     m_coords = coords;
-    m_minimapCoords = minimapCoords;
+    m_map = map;
+    m_minimapCoords = convertCoords(coords, map);
     m_type = type;
 }
 
@@ -15,22 +16,31 @@ MapMarker::operator QString()
     return QString("MapMarker| World coords: %1 | Minimap %2 | Type %3").arg(worldCoords, mapCoords, nameMap[m_type]);
 }
 
+QPointF MapMarker::convertCoords(QVector3D coords, GameMap map) {
+    float x = coords.x();
+    float y = coords.y();
+    const auto transform = transformMap.at(map);
+    x = abs(x - transform[0])/transform[2];
+    y = abs(y - transform[1])/transform[2];
+    return QPointF(x, y);
+}
+
 QVector3D MapMarker::coords()
 {
     return m_coords;
 }
 
-QPointF MapMarker::minimapCoords()
+const QPointF MapMarker::minimapCoords()
 {
     return m_minimapCoords;
 }
 
-MarkerType MapMarker::type()
+const MarkerType MapMarker::type()
 {
     return m_type;
 }
 
-QString MapMarker::typeString()
+const QString MapMarker::typeString()
 {
     return nameMap[m_type];
 }
@@ -38,11 +48,6 @@ QString MapMarker::typeString()
 void MapMarker::setCoords(QVector3D coords)
 {
     m_coords = coords;
-}
-
-void MapMarker::setMinimapCoords(QPointF minimapCoords)
-{
-    m_minimapCoords = minimapCoords;
 }
 
 void MapMarker::setType(MarkerType type)

@@ -6,8 +6,11 @@
 #include <QPointF>
 #include <QVector3D>
 #include <QVariant>
+#include <QString>
+#include <QIcon>
+#include "gamemap.h"
 
-enum MarkerType {
+enum class MarkerType {
     Player,
     Sniper,
     MortarTitan,
@@ -21,36 +24,45 @@ enum MarkerType {
 };
 
 static const QMap<MarkerType, QString> nameMap {
-    {Player, "Player"},
-    {Sniper, "Sniper"},
-    {MortarTitan, "Mortar Titan"},
-    {MortarSpectre, "Mortar Spectre"},
-    {TickReaper, "Tick Reaper"},
-    {PlayerSpawn, "Player Spawn"},
-    {NPCSpawn, "NPC Spawn"},
-    {Smoke, "Smoke"},
-    {Shop, "Shop"},
-    {Route, "Route"}
+    {MarkerType::Player, "Player"},
+    {MarkerType::Sniper, "Sniper"},
+    {MarkerType::MortarTitan, "Mortar Titan"},
+    {MarkerType::MortarSpectre, "Mortar Spectre"},
+    {MarkerType::TickReaper, "Tick Reaper"},
+    {MarkerType::PlayerSpawn, "Player Spawn"},
+    {MarkerType::NPCSpawn, "NPC Spawn"},
+    {MarkerType::Smoke, "Smoke"},
+    {MarkerType::Shop, "Shop"},
+    {MarkerType::Route, "Route"}
 };
 
 
-class MapMarker : public QVariant
+
+class MapMarker
 {
+
 public:
-    MapMarker(QVector3D coords, QPointF minimapCoords, MarkerType type);
+    MapMarker() = default;
+    ~MapMarker() = default;
+    MapMarker(const MapMarker &marker) = default;
+    MapMarker &operator=(const MapMarker &) = default;
+    MapMarker(QVector3D coords, GameMap map, MarkerType type);
     operator QString();
     QVector3D coords();
-    QPointF minimapCoords();
-    MarkerType type();
-    QString typeString();
+    const QPointF minimapCoords();
+    const MarkerType type();
+    const QString typeString();
+    static QPointF convertCoords(QVector3D coords, GameMap map);
 
     void setCoords(QVector3D coords);
-    void setMinimapCoords(QPointF minimapCoords);
     void setType(MarkerType type);
 private:
     QVector3D m_coords;
     QPointF m_minimapCoords;
     MarkerType m_type;
+    GameMap m_map;
 };
+
+Q_DECLARE_METATYPE(MapMarker);
 
 #endif // MAPMARKER_H

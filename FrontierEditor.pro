@@ -11,7 +11,8 @@ DEFINES += NODE_EDITOR_STATIC
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    positionhandler.cpp \
+    mapmarker.cpp \
+    minimapgraphicsview.cpp \
     nodes/Connection.cpp \
     nodes/ConnectionBlurEffect.cpp \
     nodes/ConnectionGeometry.cpp \
@@ -33,13 +34,16 @@ SOURCES += \
     nodes/NodeStyle.cpp \
     nodes/Properties.cpp \
     nodes/StyleCollection.cpp \
+    positionmodel.cpp \
     startdatamodel.cpp
 
 HEADERS += \
     EntityData.h \
     ExecutionData.h \
+    gamemap.h \
     mainwindow.h \
-    positionhandler.h \
+    mapmarker.h \
+    minimapgraphicsview.h \
     nodes/Compiler.hpp \
     nodes/Connection.hpp \
     nodes/ConnectionBlurEffect.hpp \
@@ -73,7 +77,9 @@ HEADERS += \
     nodes/Style.hpp \
     nodes/StyleCollection.hpp \
     nodes/TypeConverter.hpp \
-    startdatamodel.h
+    positionmodel.h \
+    startdatamodel.h \
+    util.h
 
 
 
@@ -86,4 +92,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    assets.qrc \
     nodes/resources/resources.qrc
