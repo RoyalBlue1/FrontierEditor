@@ -47,7 +47,7 @@ std::shared_ptr<QtNodes::NodeData>
 SpawnNukeTitanDataModel::outData(QtNodes::PortIndex portIndex)
 {
     if(portIndex == 0)
-        return std::static_pointer_cast<QtNodes::NodeData>(_entitys);
+        return std::static_pointer_cast<QtNodes::NodeData>(_entities);
     else
         return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 }

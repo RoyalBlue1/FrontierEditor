@@ -66,7 +66,7 @@ public:
 
 private:
   std::shared_ptr<ExecutionData> _execution;
-  std::shared_ptr<EntityData> _entitys;
+  std::shared_ptr<EntityData> _entities;
   std::vector<std::pair<QUuid, int>> inputExecution;
 };
 
