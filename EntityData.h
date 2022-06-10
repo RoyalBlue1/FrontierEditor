@@ -14,28 +14,28 @@ public:
     EntityData()
     {}
 
-    EntityData(QStringList entitys)
-    : _entitys(entitys)
+    EntityData(QStringList entities)
+    : _entities(entities)
     {}
 
     NodeDataType type() const override
     {
-    return NodeDataType {"entitys",
-                         "Entitys",QColor(255,0,0)};
+    return NodeDataType {"entities",
+                         "Entities",QColor(255,0,0)};
     }
 
-    QStringList entitys() const
-    { return _entitys; }
+    QStringList entities() const
+    { return _entities; }
 
-    QString entitysAsText() const
+    QString entitiesAsText() const
     {
       QString ret;
-      for( const auto& i:_entitys)
+      for( const auto& i:_entities)
           ret+=i+QString("\n");
       return ret;
     }
 
 private:
 
-    QStringList _entitys;
+    QStringList _entities;
 };
