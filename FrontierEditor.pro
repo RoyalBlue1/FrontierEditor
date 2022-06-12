@@ -9,11 +9,11 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 DEFINES += NODE_EDITOR_STATIC
 SOURCES += \
-    enddatamodel.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    mapmarker.cpp \
-    minimapgraphicsview.cpp \
+    src/enddatamodel.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/mapmarker.cpp \
+    src/minimapgraphicsview.cpp \
     nodes/Connection.cpp \
     nodes/ConnectionBlurEffect.cpp \
     nodes/ConnectionGeometry.cpp \
@@ -35,22 +35,22 @@ SOURCES += \
     nodes/NodeStyle.cpp \
     nodes/Properties.cpp \
     nodes/StyleCollection.cpp \
-    positionmodel.cpp \
-    spawnarctitandatamodel.cpp \
-    spawnnuketitandatamodel.cpp \
-    splitexecutiondatamodel.cpp \
-    startdatamodel.cpp \
-    waitfordeathdatamodel.cpp
+    src/positionmodel.cpp \
+    src/spawnarctitandatamodel.cpp \
+    src/spawnnuketitandatamodel.cpp \
+    src/splitexecutiondatamodel.cpp \
+    src/startdatamodel.cpp \
+    src/waitfordeathdatamodel.cpp
 
 HEADERS += \
-    EntityData.h \
-    ExecutionData.h \
-    gamemap.h \
-    mainwindow.h \
-    mapmarker.h \
-    minimapgraphicsview.h \
-    enddatamodel.h \
-    mainwindow.h \
+    include/EntityData.h \
+    include/ExecutionData.h \
+    include/gamemap.h \
+    include/mainwindow.h \
+    include/mapmarker.h \
+    include/minimapgraphicsview.h \
+    include/enddatamodel.h \
+    include/mainwindow.h \
     nodes/Compiler.hpp \
     nodes/Connection.hpp \
     nodes/ConnectionBlurEffect.hpp \
@@ -84,14 +84,14 @@ HEADERS += \
     nodes/Style.hpp \
     nodes/StyleCollection.hpp \
     nodes/TypeConverter.hpp \
-    positionmodel.h \
-    startdatamodel.h \
-    util.h \ 
-    spawnarctitandatamodel.h \
-    spawnnuketitandatamodel.h \
-    splitexecutiondatamodel.h \
-    startdatamodel.h \
-    waitfordeathdatamodel.h
+    include/positionmodel.h \
+    include/startdatamodel.h \
+    include/util.h \ 
+    include/spawnarctitandatamodel.h \
+    include/spawnnuketitandatamodel.h \
+    include/splitexecutiondatamodel.h \
+    include/startdatamodel.h \
+    include/waitfordeathdatamodel.h
 
 
 
