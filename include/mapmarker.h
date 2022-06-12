@@ -20,7 +20,8 @@ enum class MarkerType {
     NPCSpawn,
     Smoke,
     Shop,
-    Route
+    Route,
+    Prop
 };
 
 static const QMap<MarkerType, QString> nameMap {
@@ -33,31 +34,37 @@ static const QMap<MarkerType, QString> nameMap {
     {MarkerType::NPCSpawn, "NPC Spawn"},
     {MarkerType::Smoke, "Smoke"},
     {MarkerType::Shop, "Shop"},
-    {MarkerType::Route, "Route"}
+    {MarkerType::Route, "Route"},
+    {MarkerType::Prop, "Prop"}
 };
 
 
 
 class MapMarker
 {
-
 public:
     MapMarker() = default;
     ~MapMarker() = default;
     MapMarker(const MapMarker &marker) = default;
     MapMarker &operator=(const MapMarker &) = default;
     MapMarker(QVector3D coords, GameMap map, MarkerType type);
+    MapMarker(QVector3D coords, QVector3D rotation, GameMap map, MarkerType type);
     operator QString();
     QVector3D coords();
+    QVector3D rotation();
     const QPointF minimapCoords();
     const MarkerType type();
     const QString typeString();
     static QPointF convertCoords(QVector3D coords, GameMap map);
 
     void setCoords(QVector3D coords);
+    void setRotation(QVector3D rotation);
     void setType(MarkerType type);
+
+
 private:
     QVector3D m_coords;
+    QVector3D m_rotation;
     QPointF m_minimapCoords;
     MarkerType m_type;
     GameMap m_map;

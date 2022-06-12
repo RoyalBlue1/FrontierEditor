@@ -82,11 +82,16 @@ void MainWindow::onMenuSelect(const QItemSelection &selected, const QItemSelecti
         ui->xCoordSpinBox->setValue(marker.coords().x());
         ui->yCoordSpinBox->setValue(marker.coords().y());
         ui->zCoordSpinBox->setValue(marker.coords().z());
+        ui->xRotDoubleSpinBox->setValue(marker.rotation().x());
+        ui->yRotDoubleSpinBox->setValue(marker.rotation().y());
+        ui->zRotDoubleSpinBox->setValue(marker.rotation().z());
     }
     else {
         ui->markerGroupBox->setDisabled(true);
     }
 }
+
+
 
 //void MainWindow::onMinimapSelect(QModelIndex index) {
 
