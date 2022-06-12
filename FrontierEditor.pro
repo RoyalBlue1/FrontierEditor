@@ -86,7 +86,7 @@ HEADERS += \
     nodes/TypeConverter.hpp \
     include/positionmodel.h \
     include/startdatamodel.h \
-    include/util.h \ 
+    include/util.h \
     include/spawnarctitandatamodel.h \
     include/spawnnuketitandatamodel.h \
     include/splitexecutiondatamodel.h \
@@ -106,3 +106,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     assets.qrc \
     nodes/resources/resources.qrc
+
+INCLUDEPATH += $$PWD/include
