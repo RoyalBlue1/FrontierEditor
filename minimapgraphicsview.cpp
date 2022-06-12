@@ -104,11 +104,21 @@ void MinimapGraphicsView::wheelEvent(QWheelEvent *event)
 
         // Clamp scale btwn 1 and 50
 
-        if (transform.m11() < m_minScale || transform.m11() > 50){
-            QGraphicsView::wheelEvent(event);
+        if (transform.m11() < m_minScale) {
+            transform.scale(m_minScale / transform.m11(), m_minScale / transform.m22());
+            setTransform(transform);
+            for (auto marker: m_markerPixmapList) {
+                marker->setScale(0.4);
+            }
+            return;
+        }
+        else if (transform.m11() > 50){
+            transform.scale(50 / transform.m11(), 50 / transform.m22());
+            setTransform(transform);
             return;
         }
         setTransform(transform);
+
         for (auto marker: m_markerPixmapList) {
             marker->setScale(1/scale * marker->scale());
         }
