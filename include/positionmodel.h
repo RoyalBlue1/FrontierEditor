@@ -6,7 +6,11 @@
 #include <QVector3D>
 #include <QIcon>
 
-
+enum PositionRoles {
+    TypeRole = 32,
+    PositionRole = 64,
+    RotationRole = 128
+};
 
 class PositionModel : public QAbstractListModel
 {
