@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <QtWidgets/QWidget>
 
 #include "PortType.hpp"
@@ -15,173 +14,137 @@
 namespace QtNodes
 {
 
-enum class NodeValidationState
-{
-  Valid,
-  Warning,
-  Error
-};
+	enum class NodeValidationState
+	{
+		Valid,
+		Warning,
+		Error
+	};
 
-class Connection;
+	class Connection;
 
-class StyleCollection;
+	class StyleCollection;
 
-class NODE_EDITOR_PUBLIC NodeDataModel
-  : public QObject
-  , public Serializable
-{
-  Q_OBJECT
+	class NODE_EDITOR_PUBLIC NodeDataModel : public QObject, public Serializable
+	{
+		Q_OBJECT
 
-public:
+	  public:
+		NodeDataModel();
 
-  NodeDataModel();
+		virtual ~NodeDataModel() = default;
 
-  virtual
-  ~NodeDataModel() = default;
+		/// Caption is used in GUI
+		virtual QString caption() const = 0;
 
-  /// Caption is used in GUI
-  virtual QString
-  caption() const = 0;
+		/// It is possible to hide caption in GUI
+		virtual bool captionVisible() const
+		{
+			return true;
+		}
 
-  /// It is possible to hide caption in GUI
-  virtual bool
-  captionVisible() const { return true; }
+		/// Port caption is used in GUI to label individual ports
+		virtual QString portCaption(PortType, PortIndex) const
+		{
+			return QString();
+		}
 
-  /// Port caption is used in GUI to label individual ports
-  virtual QString
-  portCaption(PortType, PortIndex) const { return QString(); }
+		/// It is possible to hide port caption in GUI
+		virtual bool portCaptionVisible(PortType, PortIndex) const
+		{
+			return false;
+		}
 
-  /// It is possible to hide port caption in GUI
-  virtual bool
-  portCaptionVisible(PortType, PortIndex) const { return false; }
+		/// Name makes this model unique
+		virtual QString name() const = 0;
 
-  /// Name makes this model unique
-  virtual QString
-  name() const = 0;
+	  public:
+		QJsonObject save() const override;
 
-public:
+	  public:
+		virtual unsigned int nPorts(PortType portType) const = 0;
 
-  QJsonObject
-  save() const override;
+		virtual NodeDataType dataType(PortType portType, PortIndex portIndex) const = 0;
 
-public:
+	  public:
+		enum class ConnectionPolicy
+		{
+			One,
+			Many,
+		};
 
-  virtual
-  unsigned int nPorts(PortType portType) const = 0;
+		virtual ConnectionPolicy portOutConnectionPolicy(PortIndex) const
+		{
+			return ConnectionPolicy::Many;
+		}
 
-  virtual
-  NodeDataType dataType(PortType portType, PortIndex portIndex) const = 0;
+		virtual ConnectionPolicy portInConnectionPolicy(PortIndex) const
+		{
+			return ConnectionPolicy::One;
+		}
 
-public:
+		NodeStyle const& nodeStyle() const;
 
-  enum class ConnectionPolicy
-  {
-    One,
-    Many,
-  };
+		void setNodeStyle(NodeStyle const& style);
 
-  virtual
-  ConnectionPolicy
-  portOutConnectionPolicy(PortIndex) const
-  {
-    return ConnectionPolicy::Many;
-  }
+	  public:
+		/// Triggers the algorithm
+		virtual void setInData(std::shared_ptr<NodeData> nodeData, PortIndex port) = 0;
 
-  virtual
-  ConnectionPolicy
-  portInConnectionPolicy(PortIndex) const
-  {
-    return ConnectionPolicy::One;
-  }
+		// Use this if portInConnectionPolicy returns ConnectionPolicy::Many
+		virtual void setInData(std::shared_ptr<NodeData> nodeData, PortIndex port, const QUuid& connectionId)
+		{
+			Q_UNUSED(connectionId);
+			setInData(nodeData, port);
+		}
 
-  NodeStyle const&
-  nodeStyle() const;
+		virtual std::shared_ptr<NodeData> outData(PortIndex port) = 0;
 
-  void
-  setNodeStyle(NodeStyle const& style);
+		virtual QWidget* embeddedWidget() = 0;
 
-public:
+		virtual bool resizable() const
+		{
+			return false;
+		}
 
-  /// Triggers the algorithm
-  virtual
-  void
-  setInData(std::shared_ptr<NodeData> nodeData,
-            PortIndex port) = 0;
+		virtual NodeValidationState validationState() const
+		{
+			return NodeValidationState::Valid;
+		}
 
-  // Use this if portInConnectionPolicy returns ConnectionPolicy::Many
-  virtual
-  void
-  setInData(std::shared_ptr<NodeData> nodeData,
-            PortIndex port,
-            const QUuid& connectionId)
-  {
-    Q_UNUSED(connectionId);
-    setInData(nodeData, port);
-  }
+		virtual QString validationMessage() const
+		{
+			return QString("");
+		}
 
-  virtual
-  std::shared_ptr<NodeData>
-  outData(PortIndex port) = 0;
+		virtual NodePainterDelegate* painterDelegate() const
+		{
+			return nullptr;
+		}
 
-  virtual
-  QWidget *
-  embeddedWidget() = 0;
+	  public Q_SLOTS:
 
-  virtual
-  bool
-  resizable() const { return false; }
+		virtual void inputConnectionCreated(Connection const&) {}
 
-  virtual
-  NodeValidationState
-  validationState() const { return NodeValidationState::Valid; }
+		virtual void inputConnectionDeleted(Connection const&) {}
 
-  virtual
-  QString
-  validationMessage() const { return QString(""); }
+		virtual void outputConnectionCreated(Connection const&) {}
 
-  virtual
-  NodePainterDelegate* painterDelegate() const { return nullptr; }
+		virtual void outputConnectionDeleted(Connection const&) {}
 
-public Q_SLOTS:
+	  Q_SIGNALS:
 
-  virtual void
-  inputConnectionCreated(Connection const&)
-  {
-  }
+		void dataUpdated(PortIndex index);
 
-  virtual void
-  inputConnectionDeleted(Connection const&)
-  {
-  }
+		void dataInvalidated(PortIndex index);
 
-  virtual void
-  outputConnectionCreated(Connection const&)
-  {
-  }
+		void computingStarted();
 
-  virtual void
-  outputConnectionDeleted(Connection const&)
-  {
-  }
+		void computingFinished();
 
-Q_SIGNALS:
+		void embeddedWidgetSizeUpdated();
 
-  void
-  dataUpdated(PortIndex index);
-
-  void
-  dataInvalidated(PortIndex index);
-
-  void
-  computingStarted();
-
-  void
-  computingFinished();
-
-  void embeddedWidgetSizeUpdated();
-
-private:
-
-  NodeStyle _nodeStyle;
-};
-}
+	  private:
+		NodeStyle _nodeStyle;
+	};
+} // namespace QtNodes

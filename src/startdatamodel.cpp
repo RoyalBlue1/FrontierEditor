@@ -1,13 +1,8 @@
 #include "startdatamodel.h"
 
-StartDataModel::StartDataModel()
-{
+StartDataModel::StartDataModel() {}
 
-}
-
-unsigned int
-StartDataModel::
-nPorts(QtNodes::PortType portType) const
+unsigned int StartDataModel::nPorts(QtNodes::PortType portType) const
 {
 	unsigned int result = 1;
 
@@ -27,16 +22,12 @@ nPorts(QtNodes::PortType portType) const
 	return result;
 }
 
-QtNodes::NodeDataType
-StartDataModel::
-dataType(QtNodes::PortType, QtNodes::PortIndex) const
+QtNodes::NodeDataType StartDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const
 {
 	return ExecutionData().type();
 }
 
-
-std::shared_ptr<QtNodes::NodeData>
-StartDataModel::outData(QtNodes::PortIndex)
+std::shared_ptr<QtNodes::NodeData> StartDataModel::outData(QtNodes::PortIndex)
 {
 	return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 }

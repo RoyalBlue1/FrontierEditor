@@ -5,18 +5,16 @@
 namespace QtNodes
 {
 
-class ConnectionGraphicsObject;
+	class ConnectionGraphicsObject;
 
-class ConnectionBlurEffect : public QGraphicsBlurEffect
-{
+	class ConnectionBlurEffect : public QGraphicsBlurEffect
+	{
 
-public:
+	  public:
+		ConnectionBlurEffect(ConnectionGraphicsObject* item);
 
-  ConnectionBlurEffect(ConnectionGraphicsObject* item);
+		void draw(QPainter* painter) override;
 
-  void
-  draw(QPainter* painter) override;
-
-private:
-};
-}
+	  private:
+	};
+} // namespace QtNodes

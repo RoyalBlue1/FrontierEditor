@@ -1,13 +1,8 @@
 #include "enddatamodel.h"
 
-EndDataModel::EndDataModel()
-{
+EndDataModel::EndDataModel() {}
 
-}
-
-unsigned int
-EndDataModel::
-nPorts(QtNodes::PortType portType) const
+unsigned int EndDataModel::nPorts(QtNodes::PortType portType) const
 {
 	unsigned int result = 1;
 
@@ -27,11 +22,7 @@ nPorts(QtNodes::PortType portType) const
 	return result;
 }
 
-QtNodes::NodeDataType
-EndDataModel::
-dataType(QtNodes::PortType, QtNodes::PortIndex) const
+QtNodes::NodeDataType EndDataModel::dataType(QtNodes::PortType, QtNodes::PortIndex) const
 {
 	return ExecutionData().type();
 }
-
-

@@ -14,24 +14,27 @@
 #include "nodes/ConnectionStyle.hpp"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui
+{
+	class MainWindow;
+}
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 
-public:
-	MainWindow(QWidget *parent = nullptr);
+  public:
+	MainWindow(QWidget* parent = nullptr);
 	~MainWindow();
-public slots:
-	void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
+  public slots:
+	void onMarkerSelect(const QItemSelection& selected, const QItemSelection& deselected);
 	void onPositionChange(double value);
 	void onRotationChange(double value);
-	//    void onMinimapSelect(const QModelIndex index);
-private:
-	Ui::MainWindow *ui;
-	PositionModel *positionModel;
-	QItemSelectionModel *markerSelectionModel;
+	//	void onMinimapSelect(const QModelIndex index);
+  private:
+	Ui::MainWindow* ui;
+	PositionModel* positionModel;
+	QItemSelectionModel* markerSelectionModel;
 };
 #endif // MAINWINDOW_H

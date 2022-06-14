@@ -2,40 +2,36 @@
 
 #include "nodes/NodeDataModel.hpp"
 
-using QtNodes::NodeDataType;
 using QtNodes::NodeData;
+using QtNodes::NodeDataType;
 
 /// The class can potentially incapsulate any user data which
 /// need to be transferred within the Node Editor graph
 class EntityData : public NodeData
 {
-public:
+  public:
+	EntityData() {}
 
-	EntityData()
-	{}
-
-	EntityData(QStringList entities)
-		: _entities(entities)
-	{}
+	EntityData(QStringList entities) : _entities(entities) {}
 
 	NodeDataType type() const override
 	{
-		return NodeDataType {"entities",
-			"Entities",QColor(255,0,0)};
+		return NodeDataType {"entities", "Entities", QColor(255, 0, 0)};
 	}
 
 	QStringList entities() const
-	{ return _entities; }
+	{
+		return _entities;
+	}
 
 	QString entitiesAsText() const
 	{
 		QString ret;
-		for( const auto& i:_entities)
-			ret+=i+QString("\n");
+		for (const auto& i : _entities)
+			ret += i + QString("\n");
 		return ret;
 	}
 
-private:
-
+  private:
 	QStringList _entities;
 };

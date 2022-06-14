@@ -7,15 +7,11 @@
 
 namespace std
 {
-template<>
-struct hash<QUuid>
-{
-  inline
-  std::size_t
-  operator()(QUuid const& uid) const
-  {
-    return qHash(uid);
-  }
-};
-}
-
+	template <> struct hash<QUuid>
+	{
+		inline std::size_t operator()(QUuid const& uid) const
+		{
+			return qHash(uid);
+		}
+	};
+} // namespace std

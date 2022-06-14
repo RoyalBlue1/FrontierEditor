@@ -4,9 +4,7 @@ SpawnTitanDataModel::SpawnTitanDataModel()
 {
 	QGridLayout(_widget);
 }
-unsigned int
-SpawnTitanDataModel::
-nPorts(QtNodes::PortType portType) const
+unsigned int SpawnTitanDataModel::nPorts(QtNodes::PortType portType) const
 {
 	unsigned int result = 1;
 
@@ -26,26 +24,23 @@ nPorts(QtNodes::PortType portType) const
 	return result;
 }
 
-QtNodes::NodeDataType
-SpawnTitanDataModel::
-dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
+QtNodes::NodeDataType SpawnTitanDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
 {
-	switch(portType)
+	switch (portType)
 	{
 	case QtNodes::PortType::In:
 		return ExecutionData().type();
 	case QtNodes::PortType::Out:
-		if(portIndex == 0)
+		if (portIndex == 0)
 			return EntityData().type();
 		else
 			return ExecutionData().type();
 	}
 	return NodeDataType();
 }
-std::shared_ptr<QtNodes::NodeData>
-SpawnTitanDataModel::outData(QtNodes::PortIndex portIndex)
+std::shared_ptr<QtNodes::NodeData> SpawnTitanDataModel::outData(QtNodes::PortIndex portIndex)
 {
-	if(portIndex == 0)
+	if (portIndex == 0)
 		return std::static_pointer_cast<QtNodes::NodeData>(_entities);
 	else
 		return std::static_pointer_cast<QtNodes::NodeData>(_execution);

@@ -10,50 +10,50 @@
 #include "ExecutionData.h"
 #include "EntityData.h"
 
-
 class WaitForDeathDataModel : public QtNodes::NodeDataModel
 {
 	Q_OBJECT
-public:
+  public:
 	WaitForDeathDataModel();
 
 	QString caption() const override
-	{ return QStringLiteral("Wait for death"); }
+	{
+		return QStringLiteral("Wait for death");
+	}
 
 	bool captionVisible() const override
-	{ return true; }
+	{
+		return true;
+	}
 
 	QString name() const override
-	{ return QStringLiteral("WaitForDeath"); }
+	{
+		return QStringLiteral("WaitForDeath");
+	}
 
-	QWidget *embeddedWidget() override { return nullptr; }
+	QWidget* embeddedWidget() override
+	{
+		return nullptr;
+	}
 
-public:
+  public:
+	unsigned int nPorts(QtNodes::PortType portType) const override;
 
-	unsigned int
-	nPorts(QtNodes::PortType portType) const override;
+	QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
-	QtNodes::NodeDataType
-	dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
+	std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override;
 
-	std::shared_ptr<QtNodes::NodeData>
-	outData(QtNodes::PortIndex port) override;
-
-	ConnectionPolicy
-	portInConnectionPolicy(QtNodes::PortIndex) const override
+	ConnectionPolicy portInConnectionPolicy(QtNodes::PortIndex) const override
 	{
 		return ConnectionPolicy::Many;
 	}
 
-	void
-	setInData(std::shared_ptr<QtNodes::NodeData> data, int) override {}
+	void setInData(std::shared_ptr<QtNodes::NodeData> data, int) override {}
 
-	void
-	setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override;
+	void setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override;
 
-
-private:
-	QLabel *_label;
+  private:
+	QLabel* _label;
 	std::shared_ptr<ExecutionData> _execution;
 	std::vector<std::pair<QUuid, int>> inputExecution;
 };

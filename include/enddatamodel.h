@@ -7,47 +7,47 @@
 class EndDataModel : public QtNodes::NodeDataModel
 {
 	Q_OBJECT
-public:
+  public:
 	EndDataModel();
 
 	QString caption() const override
-	{ return QStringLiteral("End Wave"); }
+	{
+		return QStringLiteral("End Wave");
+	}
 
 	bool captionVisible() const override
-	{ return true; }
+	{
+		return true;
+	}
 
 	QString name() const override
-	{ return QStringLiteral("WaveEnd"); }
+	{
+		return QStringLiteral("WaveEnd");
+	}
 
-	QWidget *embeddedWidget() override { return nullptr; }
+	QWidget* embeddedWidget() override
+	{
+		return nullptr;
+	}
 
-public:
+  public:
+	unsigned int nPorts(QtNodes::PortType portType) const override;
 
-	unsigned int
-	nPorts(QtNodes::PortType portType) const override;
+	QtNodes::NodeDataType dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
-	QtNodes::NodeDataType
-	dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
-
-	std::shared_ptr<QtNodes::NodeData>
-	outData(QtNodes::PortIndex port) override
+	std::shared_ptr<QtNodes::NodeData> outData(QtNodes::PortIndex port) override
 	{
 		return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 	}
 
-	void
-	setInData(std::shared_ptr<QtNodes::NodeData>, int) override
-	{ }
+	void setInData(std::shared_ptr<QtNodes::NodeData>, int) override {}
 
-	ConnectionPolicy
-	portInConnectionPolicy(QtNodes::PortIndex) const override
+	ConnectionPolicy portInConnectionPolicy(QtNodes::PortIndex) const override
 	{
 		return ConnectionPolicy::Many;
 	}
 
-
-private:
-
+  private:
 	std::shared_ptr<ExecutionData> _execution;
 };
 
