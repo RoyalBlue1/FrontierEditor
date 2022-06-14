@@ -65,8 +65,8 @@ const QString MapMarker::typeString()
 
 void MapMarker::setCoords(QVector3D coords)
 {
-    m_coords = coords;
-    m_minimapCoords = convertCoords(coords, m_map);
+	m_coords = coords;
+	m_minimapCoords = convertCoords(coords, m_map);
 }
 
 void MapMarker::setType(MarkerType type)

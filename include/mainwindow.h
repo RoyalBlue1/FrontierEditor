@@ -25,10 +25,10 @@ public:
 	MainWindow(QWidget *parent = nullptr);
 	~MainWindow();
 public slots:
-    void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
-    void onPositionChange(double value);
-    void onRotationChange(double value);
-//    void onMinimapSelect(const QModelIndex index);
+	void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
+	void onPositionChange(double value);
+	void onRotationChange(double value);
+	//    void onMinimapSelect(const QModelIndex index);
 private:
 	Ui::MainWindow *ui;
 	PositionModel *positionModel;

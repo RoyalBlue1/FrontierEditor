@@ -63,11 +63,11 @@ public:
 
 
 private:
-    MarkerType m_type;
-    QVector3D m_coords;
-    QVector3D m_rotation;
-    QPointF m_minimapCoords;
-    GameMap m_map;
+	MarkerType m_type;
+	QVector3D m_coords;
+	QVector3D m_rotation;
+	QPointF m_minimapCoords;
+	GameMap m_map;
 };
 
 Q_DECLARE_METATYPE(MapMarker);

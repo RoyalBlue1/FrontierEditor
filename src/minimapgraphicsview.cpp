@@ -38,20 +38,20 @@ void MinimapGraphicsView::setMap(GameMap name)
 
 void MinimapGraphicsView::setModel(PositionModel *model)
 {
-    m_positionModel = model;
-    auto markers = model->getMarkers();
-    for (MapMarker marker : markers) {
-        QPointF coords = marker.minimapCoords();
-        QPixmap pixmap = m_markerTypePixmap[marker.type()];
-        QGraphicsPixmapItem *item = m_scene->addPixmap(pixmap);
-        item->setScale(0.4);
-        item->moveBy(coords.x(), coords.y());
-        item->setOffset(-item->boundingRect().width()/2, -item->boundingRect().height()/2);
-        m_markerPixmapList.append(item);
-    }
-    connect(m_positionModel, &PositionModel::rowsInserted, this, &MinimapGraphicsView::markersAdded);
-    connect(m_positionModel, &PositionModel::rowsRemoved, this, &MinimapGraphicsView::markersRemoved);
-    connect(m_positionModel, &PositionModel::dataChanged, this, &MinimapGraphicsView::markersUpdated);
+	m_positionModel = model;
+	auto markers = model->getMarkers();
+	for (MapMarker marker : markers) {
+		QPointF coords = marker.minimapCoords();
+		QPixmap pixmap = m_markerTypePixmap[marker.type()];
+		QGraphicsPixmapItem *item = m_scene->addPixmap(pixmap);
+		item->setScale(0.4);
+		item->moveBy(coords.x(), coords.y());
+		item->setOffset(-item->boundingRect().width()/2, -item->boundingRect().height()/2);
+		m_markerPixmapList.append(item);
+	}
+	connect(m_positionModel, &PositionModel::rowsInserted, this, &MinimapGraphicsView::markersAdded);
+	connect(m_positionModel, &PositionModel::rowsRemoved, this, &MinimapGraphicsView::markersRemoved);
+	connect(m_positionModel, &PositionModel::dataChanged, this, &MinimapGraphicsView::markersUpdated);
 
 }
 
@@ -63,10 +63,10 @@ void MinimapGraphicsView::markersAdded(const QModelIndex &, int first, int last)
 		QPixmap pixmap = m_markerTypePixmap[marker.type()];
 		QGraphicsPixmapItem *item = m_scene->addPixmap(pixmap);
 
-        item->setScale(0.4);
-        item->setPos(coords.x(), coords.y());
-        m_markerPixmapList.append(item);
-    }
+		item->setScale(0.4);
+		item->setPos(coords.x(), coords.y());
+		m_markerPixmapList.append(item);
+	}
 }
 
 void MinimapGraphicsView::markersRemoved(const QModelIndex &parent, int first, int last)
@@ -76,17 +76,17 @@ void MinimapGraphicsView::markersRemoved(const QModelIndex &parent, int first, i
 
 void MinimapGraphicsView::markersUpdated(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &)
 {
-    qDebug() << topLeft << bottomRight;
-    for (int i = topLeft.row(); i <= bottomRight.row(); i++) {
-        MapMarker marker = qvariant_cast<MapMarker>(m_positionModel->data(m_positionModel->index(i), Qt::UserRole));
-        auto coords = marker.minimapCoords();
+	qDebug() << topLeft << bottomRight;
+	for (int i = topLeft.row(); i <= bottomRight.row(); i++) {
+		MapMarker marker = qvariant_cast<MapMarker>(m_positionModel->data(m_positionModel->index(i), Qt::UserRole));
+		auto coords = marker.minimapCoords();
 
-        QGraphicsPixmapItem *item = m_markerPixmapList[i];
+		QGraphicsPixmapItem *item = m_markerPixmapList[i];
 
-        item->setPos(coords.x(), coords.y());
+		item->setPos(coords.x(), coords.y());
 
-        item->setPixmap(m_markerTypePixmap[marker.type()]);
-    }
+		item->setPixmap(m_markerTypePixmap[marker.type()]);
+	}
 }
 
 //void MinimapGraphicsView::removeMarker(int index)
@@ -101,39 +101,39 @@ void MinimapGraphicsView::markersUpdated(const QModelIndex &topLeft, const QMode
 
 void MinimapGraphicsView::wheelEvent(QWheelEvent *event)
 {
-    if (event->modifiers().testAnyFlag(Qt::ControlModifier))
-    {
-        int angle = event->angleDelta().y();
-        QTransform tr = transform();
-        float scale = 1;
-        if (angle > 0)
-        {
-            // Scroll up
-            scale = 1.1f;
-        }
-        else if (angle < 0)
-        {
-            // Scroll Down
-            scale = 0.9f;
-        }
-        tr.scale(scale, scale);
+	if (event->modifiers().testAnyFlag(Qt::ControlModifier))
+	{
+		int angle = event->angleDelta().y();
+		QTransform tr = transform();
+		float scale = 1;
+		if (angle > 0)
+		{
+			// Scroll up
+			scale = 1.1f;
+		}
+		else if (angle < 0)
+		{
+			// Scroll Down
+			scale = 0.9f;
+		}
+		tr.scale(scale, scale);
 
 		// Clamp scale btwn 1 and 50
 
-        if (tr.m11() < m_minScale) {
-            tr.scale(m_minScale / tr.m11(), m_minScale / tr.m22());
-            setTransform(tr);
-            for (auto marker: m_markerPixmapList) {
-                marker->setScale(0.4);
-            }
-            return;
-        }
-        else if (tr.m11() > 50){
-            tr.scale(50 / tr.m11(), 50 / tr.m22());
-            setTransform(tr);
-            return;
-        }
-        setTransform(tr);
+		if (tr.m11() < m_minScale) {
+			tr.scale(m_minScale / tr.m11(), m_minScale / tr.m22());
+			setTransform(tr);
+			for (auto marker: m_markerPixmapList) {
+				marker->setScale(0.4);
+			}
+			return;
+		}
+		else if (tr.m11() > 50){
+			tr.scale(50 / tr.m11(), 50 / tr.m22());
+			setTransform(tr);
+			return;
+		}
+		setTransform(tr);
 
 		for (auto marker: m_markerPixmapList) {
 			marker->setScale(1/scale * marker->scale());
@@ -147,11 +147,11 @@ void MinimapGraphicsView::wheelEvent(QWheelEvent *event)
 
 void MinimapGraphicsView::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && !event->modifiers().testAnyFlag(Qt::ShiftModifier))
-    {
-        QPointF clickPos = mapToScene(event->pos()); // Mouse click to scene coords (0-512, 0-512)
-        auto pair = m_positionModel->getClosest(clickPos);
-        qreal scale = transform().m11();
+	if (event->button() == Qt::LeftButton && !event->modifiers().testAnyFlag(Qt::ShiftModifier))
+	{
+		QPointF clickPos = mapToScene(event->pos()); // Mouse click to scene coords (0-512, 0-512)
+		auto pair = m_positionModel->getClosest(clickPos);
+		qreal scale = transform().m11();
 
 		if (distance(pair.first.minimapCoords(), clickPos) < 15 * 1/scale)
 			emit markerClicked(pair.second);

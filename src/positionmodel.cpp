@@ -4,18 +4,18 @@
 PositionModel::PositionModel(QObject *parent)
 	: QAbstractListModel(parent)
 {
-    m_iconMap = {
-        {MarkerType::Player, QIcon(":/assets/icons/compass_icon_friendly_pilot.png")},
-        {MarkerType::Sniper, QIcon(":/assets/icons/fd_icon_northstar.png")},
-        {MarkerType::MortarTitan, QIcon(":/assets/icons/fd_icon_titan_mortar.png")},
-        {MarkerType::MortarSpectre, QIcon(":/assets/icons/fd_icon_spectre_mortar.png")},
-        {MarkerType::TickReaper, QIcon(":/assets/icons/fd_icon_reaper.png")},
-        //        {MarkerType::PlayerSpawn, QIcon(":/assets/icons/.png")},
-        {MarkerType::NPCSpawn, QIcon(":/assets/icons/fd_icon_grunt.png")},
-        //        {MarkerType::Smoke, QIcon(":/assets/icons/.png")},
-        {MarkerType::Shop, QIcon(":/assets/icons/bh_bonus_icon.png")},
-        //        {MarkerType::Route, QIcon(":/assets/icons/.png")}
-    };
+	m_iconMap = {
+		{MarkerType::Player, QIcon(":/assets/icons/compass_icon_friendly_pilot.png")},
+		{MarkerType::Sniper, QIcon(":/assets/icons/fd_icon_northstar.png")},
+		{MarkerType::MortarTitan, QIcon(":/assets/icons/fd_icon_titan_mortar.png")},
+		{MarkerType::MortarSpectre, QIcon(":/assets/icons/fd_icon_spectre_mortar.png")},
+		{MarkerType::TickReaper, QIcon(":/assets/icons/fd_icon_reaper.png")},
+		//        {MarkerType::PlayerSpawn, QIcon(":/assets/icons/.png")},
+		{MarkerType::NPCSpawn, QIcon(":/assets/icons/fd_icon_grunt.png")},
+		//        {MarkerType::Smoke, QIcon(":/assets/icons/.png")},
+		{MarkerType::Shop, QIcon(":/assets/icons/bh_bonus_icon.png")},
+		//        {MarkerType::Route, QIcon(":/assets/icons/.png")}
+	};
 }
 
 
@@ -34,22 +34,22 @@ QVariant PositionModel::data(const QModelIndex &index, int role) const
 		return QVariant();
 	MapMarker marker = m_markerList[index.row()];
 
-    switch (role) {
-    case Qt::DisplayRole:
-        return marker.typeString();
-        break;
-    case Qt::UserRole:
-        return QVariant::fromValue(marker);
-        break;
-    case Qt::DecorationRole:
-        return QIcon(m_iconMap[marker.type()]);
-    case Qt::EditRole | PositionRoles::TypeRole:
-        return QVariant::fromValue(marker.type());
-    case Qt::EditRole | PositionRoles::PositionRole:
-        return marker.coords();
-    case Qt:: EditRole | PositionRoles::RotationRole:
-        return marker.rotation();
-    }
+	switch (role) {
+	case Qt::DisplayRole:
+		return marker.typeString();
+		break;
+	case Qt::UserRole:
+		return QVariant::fromValue(marker);
+		break;
+	case Qt::DecorationRole:
+		return QIcon(m_iconMap[marker.type()]);
+	case Qt::EditRole | PositionRoles::TypeRole:
+		return QVariant::fromValue(marker.type());
+	case Qt::EditRole | PositionRoles::PositionRole:
+		return marker.coords();
+	case Qt:: EditRole | PositionRoles::RotationRole:
+		return marker.rotation();
+	}
 
 	return QVariant();
 }
@@ -61,22 +61,22 @@ QList<MapMarker> PositionModel::getMarkers()
 
 bool PositionModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    QVariant item = data(index, role);
-    if (item != value && item.canConvert(value.metaType())) {
-        // FIXME: Implement me!
+	QVariant item = data(index, role);
+	if (item != value && item.canConvert(value.metaType())) {
+		// FIXME: Implement me!
 
-        switch (role) {
-            case Qt::EditRole | PositionRoles::TypeRole:
-                m_markerList[index.row()].setType(qvariant_cast<MarkerType>(value));
-            case Qt::EditRole | PositionRoles::PositionRole:
-                m_markerList[index.row()].setCoords(qvariant_cast<QVector3D>(value));
-            case Qt:: EditRole | PositionRoles::RotationRole:
-                m_markerList[index.row()].setRotation(qvariant_cast<QVector3D>(value));
-        }
-        emit dataChanged(index, index, {role});
-        return true;
-    }
-    return false;
+		switch (role) {
+		case Qt::EditRole | PositionRoles::TypeRole:
+			m_markerList[index.row()].setType(qvariant_cast<MarkerType>(value));
+		case Qt::EditRole | PositionRoles::PositionRole:
+			m_markerList[index.row()].setCoords(qvariant_cast<QVector3D>(value));
+		case Qt:: EditRole | PositionRoles::RotationRole:
+			m_markerList[index.row()].setRotation(qvariant_cast<QVector3D>(value));
+		}
+		emit dataChanged(index, index, {role});
+		return true;
+	}
+	return false;
 }
 
 std::pair<MapMarker, QModelIndex> PositionModel::getClosest(QPointF point)
@@ -107,10 +107,10 @@ Qt::ItemFlags PositionModel::flags(const QModelIndex &index) const
 
 void PositionModel::addMarker(MapMarker marker)
 {
-    int lastRow = m_markerList.size();
-    beginInsertRows(index(lastRow), lastRow, lastRow+1);
-    m_markerList.append(marker);
-    endInsertRows();
+	int lastRow = m_markerList.size();
+	beginInsertRows(index(lastRow), lastRow, lastRow+1);
+	m_markerList.append(marker);
+	endInsertRows();
 }
 
 bool PositionModel::removeRows(int row, int count, const QModelIndex &parent)
