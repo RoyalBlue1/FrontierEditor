@@ -5,5 +5,5 @@
 #include <QPointF>
 
 inline float distance(QPointF a, QPointF b) {
-    return hypot(a.x() - b.x(), a.y() - b.y());
+	return hypot(a.x() - b.x(), a.y() - b.y());
 }

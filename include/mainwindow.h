@@ -19,19 +19,19 @@ QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+	MainWindow(QWidget *parent = nullptr);
+	~MainWindow();
 public slots:
-    void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
-    void onPositionChange(double value);
-    void onRotationChange(double value);
-//    void onMinimapSelect(const QModelIndex index);
+	void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
+	void onPositionChange(double value);
+	void onRotationChange(double value);
+	//    void onMinimapSelect(const QModelIndex index);
 private:
-    Ui::MainWindow *ui;
-    PositionModel *positionModel;
-    QItemSelectionModel *markerSelectionModel;
+	Ui::MainWindow *ui;
+	PositionModel *positionModel;
+	QItemSelectionModel *markerSelectionModel;
 };
 #endif // MAINWINDOW_H

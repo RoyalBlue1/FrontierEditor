@@ -1,5 +1,5 @@
-#ifndef SPLITEXECUTIONDATAMODEL_H
-#define SPLITEXECUTIONDATAMODEL_H
+#ifndef SPAWNTITANDATAMODEL_H
+#define SPAWNTITANDATAMODEL_H
 
 #include <QtWidgets/QLabel>
 #include <vector>
@@ -10,21 +10,17 @@
 #include "ExecutionData.h"
 #include "EntityData.h"
 
-class SplitExecutionDataModel : public QtNodes::NodeDataModel
+class SpawnTitanDataModel : public QtNodes::NodeDataModel
 {
 	Q_OBJECT
 public:
-	SplitExecutionDataModel();
-	QString caption() const override
-	{ return QStringLiteral("Split"); }
+	SpawnTitanDataModel();
 
 	bool captionVisible() const override
-	{ return false; }
+	{ return true; }
 
-	QString name() const override
-	{ return QStringLiteral("Split Execution"); }
 
-	QWidget *embeddedWidget() override { return nullptr; }
+	QWidget *embeddedWidget() override { return &_widget; }
 
 public:
 
@@ -44,20 +40,28 @@ public:
 	}
 
 	void
-	setInData(std::shared_ptr<QtNodes::NodeData> data, int) override {}
-
-	void
-	setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override {}
-
-	ConnectionPolicy
-	portOutConnectionPolicy(QtNodes::PortIndex) const
+	setInData(std::shared_ptr<QtNodes::NodeData> data, int) override
 	{
-		return ConnectionPolicy::One;
 	}
 
-private:
-	std::shared_ptr<ExecutionData> _execution;
-	std::vector<std::pair<QUuid, int>> inputExecution;
-};
+	void
+	setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override
+	{
 
-#endif // SPLITEXECUTIONDATAMODEL_H
+	}
+	ConnectionPolicy
+	portOutConnectionPolicy(QtNodes::PortIndex portIndex) const override
+	{
+		if(portIndex == 0)
+			return ConnectionPolicy::Many;
+		else
+			return ConnectionPolicy::One;
+	}
+
+protected:
+	std::shared_ptr<ExecutionData> _execution;
+	std::shared_ptr<EntityData> _entities;
+	std::vector<std::pair<QUuid, int>> inputExecution;
+	QWidget _widget;
+};
+#endif // SPAWNTITANDATAMODEL_H

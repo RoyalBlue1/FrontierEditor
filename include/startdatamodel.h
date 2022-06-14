@@ -6,45 +6,45 @@
 
 class StartDataModel : public QtNodes::NodeDataModel
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    StartDataModel();
+	StartDataModel();
 
-    QString caption() const override
-    { return QStringLiteral("Start Wave"); }
+	QString caption() const override
+	{ return QStringLiteral("Start Wave"); }
 
-    bool captionVisible() const override
-    { return true; }
+	bool captionVisible() const override
+	{ return true; }
 
-    QString name() const override
-    { return QStringLiteral("WaveStart"); }
+	QString name() const override
+	{ return QStringLiteral("WaveStart"); }
 
-    QWidget *embeddedWidget() override { return nullptr; }
+	QWidget *embeddedWidget() override { return nullptr; }
 
 public:
 
-    unsigned int
-    nPorts(QtNodes::PortType portType) const override;
+	unsigned int
+	nPorts(QtNodes::PortType portType) const override;
 
-    QtNodes::NodeDataType
-    dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
+	QtNodes::NodeDataType
+	dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
-    std::shared_ptr<QtNodes::NodeData>
-    outData(QtNodes::PortIndex port) override;
+	std::shared_ptr<QtNodes::NodeData>
+	outData(QtNodes::PortIndex port) override;
 
-    void
-    setInData(std::shared_ptr<QtNodes::NodeData>, int) override
-    { }
+	void
+	setInData(std::shared_ptr<QtNodes::NodeData>, int) override
+	{ }
 
-    ConnectionPolicy
-    portOutConnectionPolicy(QtNodes::PortIndex) const override
-    {
-      return ConnectionPolicy::One;
-    }
+	ConnectionPolicy
+	portOutConnectionPolicy(QtNodes::PortIndex) const override
+	{
+		return ConnectionPolicy::One;
+	}
 
 private:
 
-  std::shared_ptr<ExecutionData> _execution;
+	std::shared_ptr<ExecutionData> _execution;
 };
 
 #endif // STARTDATAMODEL_H

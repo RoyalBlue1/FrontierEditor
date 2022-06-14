@@ -9,34 +9,34 @@ unsigned int
 StartDataModel::
 nPorts(QtNodes::PortType portType) const
 {
-  unsigned int result = 1;
+	unsigned int result = 1;
 
-  switch (portType)
-  {
-    case QtNodes::PortType::In:
-      result = 0;
-      break;
+	switch (portType)
+	{
+	case QtNodes::PortType::In:
+		result = 0;
+		break;
 
-    case QtNodes::PortType::Out:
-      result = 1;
+	case QtNodes::PortType::Out:
+		result = 1;
 
-    default:
-      break;
-  }
+	default:
+		break;
+	}
 
-  return result;
+	return result;
 }
 
 QtNodes::NodeDataType
 StartDataModel::
 dataType(QtNodes::PortType, QtNodes::PortIndex) const
 {
-  return ExecutionData().type();
+	return ExecutionData().type();
 }
 
 
 std::shared_ptr<QtNodes::NodeData>
 StartDataModel::outData(QtNodes::PortIndex)
 {
-    return std::static_pointer_cast<QtNodes::NodeData>(_execution);
+	return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 }

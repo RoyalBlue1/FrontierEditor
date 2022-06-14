@@ -1,12 +1,11 @@
-#include "waitfordeathdatamodel.h"
-
-WaitForDeathDataModel::WaitForDeathDataModel()
+#include "spawntitandatamodel.h"
+#include <qgridlayout.h>
+SpawnTitanDataModel::SpawnTitanDataModel()
 {
-
+	QGridLayout(_widget);
 }
-
 unsigned int
-WaitForDeathDataModel::
+SpawnTitanDataModel::
 nPorts(QtNodes::PortType portType) const
 {
 	unsigned int result = 1;
@@ -14,11 +13,11 @@ nPorts(QtNodes::PortType portType) const
 	switch (portType)
 	{
 	case QtNodes::PortType::In:
-		result = 2;
+		result = 1;
 		break;
 
 	case QtNodes::PortType::Out:
-		result = 1;
+		result = 2;
 
 	default:
 		break;
@@ -28,14 +27,14 @@ nPorts(QtNodes::PortType portType) const
 }
 
 QtNodes::NodeDataType
-WaitForDeathDataModel::
+SpawnTitanDataModel::
 dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
 {
 	switch(portType)
 	{
-	case QtNodes::PortType::Out:
-		return ExecutionData().type();
 	case QtNodes::PortType::In:
+		return ExecutionData().type();
+	case QtNodes::PortType::Out:
 		if(portIndex == 0)
 			return EntityData().type();
 		else
@@ -44,13 +43,10 @@ dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
 	return NodeDataType();
 }
 std::shared_ptr<QtNodes::NodeData>
-WaitForDeathDataModel::outData(QtNodes::PortIndex portIndex)
+SpawnTitanDataModel::outData(QtNodes::PortIndex portIndex)
 {
-
-	return std::static_pointer_cast<QtNodes::NodeData>(_execution);
-}
-
-void WaitForDeathDataModel::setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId)
-{
-
+	if(portIndex == 0)
+		return std::static_pointer_cast<QtNodes::NodeData>(_entities);
+	else
+		return std::static_pointer_cast<QtNodes::NodeData>(_execution);
 }
