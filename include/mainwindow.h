@@ -25,7 +25,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 public slots:
-    void onMenuSelect(const QItemSelection &selected, const QItemSelection &deselected);
+    void onMarkerSelect(const QItemSelection &selected, const QItemSelection &deselected);
+    void onPositionChange(double value);
+    void onRotationChange(double value);
 //    void onMinimapSelect(const QModelIndex index);
 private:
     Ui::MainWindow *ui;

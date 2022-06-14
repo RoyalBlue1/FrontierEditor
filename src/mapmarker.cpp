@@ -8,7 +8,8 @@ MapMarker::MapMarker(QVector3D coords, GameMap map, MarkerType type)
     m_minimapCoords = convertCoords(coords, map);
     m_type = type;
 }
-MapMarker::MapMarker(QVector3D coords,QVector3D rotation, GameMap map, MarkerType type)
+
+MapMarker::MapMarker(QVector3D coords, QVector3D rotation, GameMap map, MarkerType type)
 {
     m_coords = coords;
     m_rotation = rotation;
@@ -65,6 +66,7 @@ const QString MapMarker::typeString()
 void MapMarker::setCoords(QVector3D coords)
 {
     m_coords = coords;
+    m_minimapCoords = convertCoords(coords, m_map);
 }
 
 void MapMarker::setType(MarkerType type)

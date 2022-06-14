@@ -33,7 +33,8 @@ signals:
 private slots:
     void markersAdded(const QModelIndex &parent, int first, int last);
     void markersRemoved(const QModelIndex &parent, int first, int last);
-
+    void markersUpdated(const QModelIndex &topLeft, const QModelIndex &bottomRight,
+                                    const QList<int> &roles = QList<int>());
 private:
     QGraphicsScene *m_scene;
     QPixmap m_mapImage;
