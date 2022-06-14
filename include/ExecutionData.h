@@ -12,17 +12,17 @@ class ExecutionData : public NodeData
 {
 public:
 
-    ExecutionData()
-    {}
+	ExecutionData()
+	{}
 
-    NodeDataType type() const override
-    {
-    return NodeDataType {"execution",
-                         "Execution",QColor(0,255,0)};
-    }
+	NodeDataType type() const override
+	{
+		return NodeDataType {"execution",
+			"Execution",QColor(0,255,0)};
+	}
 
-    int execution() const
-    { return 1; } //will contain data of previous object
+	int execution() const
+	{ return 1; } //will contain data of previous object
 
 
 

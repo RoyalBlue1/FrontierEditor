@@ -11,31 +11,31 @@ class EntityData : public NodeData
 {
 public:
 
-    EntityData()
-    {}
+	EntityData()
+	{}
 
-    EntityData(QStringList entities)
-    : _entities(entities)
-    {}
+	EntityData(QStringList entities)
+		: _entities(entities)
+	{}
 
-    NodeDataType type() const override
-    {
-    return NodeDataType {"entities",
-                         "Entities",QColor(255,0,0)};
-    }
+	NodeDataType type() const override
+	{
+		return NodeDataType {"entities",
+			"Entities",QColor(255,0,0)};
+	}
 
-    QStringList entities() const
-    { return _entities; }
+	QStringList entities() const
+	{ return _entities; }
 
-    QString entitiesAsText() const
-    {
-      QString ret;
-      for( const auto& i:_entities)
-          ret+=i+QString("\n");
-      return ret;
-    }
+	QString entitiesAsText() const
+	{
+		QString ret;
+		for( const auto& i:_entities)
+			ret+=i+QString("\n");
+		return ret;
+	}
 
 private:
 
-    QStringList _entities;
+	QStringList _entities;
 };

@@ -11,27 +11,27 @@
 
 static std::shared_ptr<QtNodes::DataModelRegistry> registerDataModels()
 {
-    auto ret = std::make_shared<QtNodes::DataModelRegistry>();
+	auto ret = std::make_shared<QtNodes::DataModelRegistry>();
 
-    ret->registerModel<StartDataModel>("Control Events");
-    ret->registerModel<SplitExecutionDataModel>("Control Events");
-    ret->registerModel<EndDataModel>("Control Events");
+	ret->registerModel<StartDataModel>("Control Events");
+	ret->registerModel<SplitExecutionDataModel>("Control Events");
+	ret->registerModel<EndDataModel>("Control Events");
 
-    ret->registerModel<SpawnArcTitanDataModel>("Spawn Events");
-    ret->registerModel<SpawnNukeTitanDataModel>("Spawn Events");
+	ret->registerModel<SpawnArcTitanDataModel>("Spawn Events");
+	ret->registerModel<SpawnNukeTitanDataModel>("Spawn Events");
 
-    ret->registerModel<WaitForDeathDataModel>("Wait Events");
-    return ret;
+	ret->registerModel<WaitForDeathDataModel>("Wait Events");
+	return ret;
 }
 
 static std::shared_ptr<QtNodes::DataModelRegistry> registerDataModels();
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+	: QMainWindow(parent)
+	, ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    QtNodes::ConnectionStyle::setConnectionStyle(
-      R"(
+	ui->setupUi(this);
+	QtNodes::ConnectionStyle::setConnectionStyle(
+				R"(
     {
       "ConnectionStyle": {
         "UseDataDefinedColors": true
@@ -50,14 +50,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->minimapGraphicsView->setMap(gameMap);
     ui->minimapGraphicsView->setModel(positionModel);
 
-    connect(ui->minimapGraphicsView, &MinimapGraphicsView::markerClicked, ui->markerListView, &QListView::setCurrentIndex);
+	connect(ui->minimapGraphicsView, &MinimapGraphicsView::markerClicked, ui->markerListView, &QListView::setCurrentIndex);
 
-    auto marker = MapMarker{QVector3D(3372.88f, 1420.11f, 3466.55f),
-            gameMap,
-            MarkerType::TickReaper
-    };
-    positionModel->addMarker(marker);
-    ui->markerGroupBox->setDisabled(true);
+	auto marker = MapMarker{QVector3D(3372.88f, 1420.11f, 3466.55f),
+			gameMap,
+			MarkerType::TickReaper
+};
+	positionModel->addMarker(marker);
+	ui->markerGroupBox->setDisabled(true);
 
     auto iter = nameMap.constBegin();
     auto end = nameMap.constEnd();
@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+	delete ui;
 }
 
 void MainWindow::onMarkerSelect(const QItemSelection &selected, const QItemSelection & )

@@ -2,7 +2,7 @@
 #include "util.h"
 
 PositionModel::PositionModel(QObject *parent)
-    : QAbstractListModel(parent)
+	: QAbstractListModel(parent)
 {
     m_iconMap = {
         {MarkerType::Player, QIcon(":/assets/icons/compass_icon_friendly_pilot.png")},
@@ -21,18 +21,18 @@ PositionModel::PositionModel(QObject *parent)
 
 int PositionModel::rowCount(const QModelIndex &parent) const
 {
-    // For list models only the root node (an invalid parent) should return the list's size. For all
-    // other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
-    if (parent.isValid())
-        return 0;
-    return m_markerList.size();
+	// For list models only the root node (an invalid parent) should return the list's size. For all
+	// other (valid) parents, rowCount() should return 0 so that it does not become a tree model.
+	if (parent.isValid())
+		return 0;
+	return m_markerList.size();
 }
 
 QVariant PositionModel::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
-        return QVariant();
-    MapMarker marker = m_markerList[index.row()];
+	if (!index.isValid())
+		return QVariant();
+	MapMarker marker = m_markerList[index.row()];
 
     switch (role) {
     case Qt::DisplayRole:
@@ -51,12 +51,12 @@ QVariant PositionModel::data(const QModelIndex &index, int role) const
         return marker.rotation();
     }
 
-    return QVariant();
+	return QVariant();
 }
 
 QList<MapMarker> PositionModel::getMarkers()
 {
-    return m_markerList;
+	return m_markerList;
 }
 
 bool PositionModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -81,28 +81,28 @@ bool PositionModel::setData(const QModelIndex &index, const QVariant &value, int
 
 std::pair<MapMarker, QModelIndex> PositionModel::getClosest(QPointF point)
 {
-    std::vector<int> indicies(m_markerList.size());
+	std::vector<int> indicies(m_markerList.size());
 
-    std::generate(indicies.begin(), indicies.end(), [i = -1]() mutable
-    {
-        return ++i;
-    });	// vector of[0...n] of markers list indicies
+	std::generate(indicies.begin(), indicies.end(), [i = -1]() mutable
+	{
+		return ++i;
+	});	// vector of[0...n] of markers list indicies
 
-    std::sort(indicies.begin(), indicies.end(), [&list = m_markerList, point](const int a, const int b)
-    {
-        // sort index vector
-        return distance(list[a].minimapCoords(), point) < distance(list[b].minimapCoords(), point);
-    });
-    //    qDebug() << indicies;
-    return std::make_pair(m_markerList[indicies[0]], index(indicies[0]));
+	std::sort(indicies.begin(), indicies.end(), [&list = m_markerList, point](const int a, const int b)
+	{
+		// sort index vector
+		return distance(list[a].minimapCoords(), point) < distance(list[b].minimapCoords(), point);
+	});
+	//    qDebug() << indicies;
+	return std::make_pair(m_markerList[indicies[0]], index(indicies[0]));
 }
 
 Qt::ItemFlags PositionModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid())
-        return Qt::NoItemFlags;
+	if (!index.isValid())
+		return Qt::NoItemFlags;
 
-    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable; // FIXME: Implement me!
+	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable; // FIXME: Implement me!
 }
 
 void PositionModel::addMarker(MapMarker marker)
@@ -115,37 +115,37 @@ void PositionModel::addMarker(MapMarker marker)
 
 bool PositionModel::removeRows(int row, int count, const QModelIndex &parent)
 {
-    beginRemoveRows(parent, row, row + count - 1);
-    m_markerList.remove(row, count);
-    endRemoveRows();
-    return true;
+	beginRemoveRows(parent, row, row + count - 1);
+	m_markerList.remove(row, count);
+	endRemoveRows();
+	return true;
 }
 
 void PositionModel::populateTest()
 {
-    beginResetModel();
+	beginResetModel();
 
-    MapMarker marker(QVector3D(-2128.12f,-2562, 25),
-                     GameMap::ForwardbaseKodai,	//TODO: Mapping from game to image, note scaling and transformation
-                     MarkerType::Sniper
-                     );
+	MapMarker marker(QVector3D(-2128.12f,-2562, 25),
+					 GameMap::ForwardbaseKodai,	//TODO: Mapping from game to image, note scaling and transformation
+					 MarkerType::Sniper
+					 );
 
-    m_markerList.append(marker);
-    // Testing code
-    MapMarker marker1 { QVector3D(-1414.29f, 908.461f, 1464.03f),
-                GameMap::ForwardbaseKodai,
-                MarkerType::MortarSpectre
-                      };
+	m_markerList.append(marker);
+	// Testing code
+	MapMarker marker1 { QVector3D(-1414.29f, 908.461f, 1464.03f),
+				GameMap::ForwardbaseKodai,
+				MarkerType::MortarSpectre
+					  };
 
-    m_markerList.append(marker1);
+	m_markerList.append(marker1);
 
-    MapMarker marker2 { QVector3D(-3297.99f, 833.893f, 1016.03f),
-                GameMap::ForwardbaseKodai,
-                MarkerType::Shop
-                      };
+	MapMarker marker2 { QVector3D(-3297.99f, 833.893f, 1016.03f),
+				GameMap::ForwardbaseKodai,
+				MarkerType::Shop
+					  };
 
-    m_markerList.append(marker2);
-    endResetModel();
+	m_markerList.append(marker2);
+	endResetModel();
 
 }
 

@@ -12,52 +12,52 @@
 
 class SplitExecutionDataModel : public QtNodes::NodeDataModel
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    SplitExecutionDataModel();
-    QString caption() const override
-    { return QStringLiteral("Split"); }
+	SplitExecutionDataModel();
+	QString caption() const override
+	{ return QStringLiteral("Split"); }
 
-    bool captionVisible() const override
-    { return false; }
+	bool captionVisible() const override
+	{ return false; }
 
-    QString name() const override
-    { return QStringLiteral("Split Execution"); }
+	QString name() const override
+	{ return QStringLiteral("Split Execution"); }
 
-    QWidget *embeddedWidget() override { return nullptr; }
+	QWidget *embeddedWidget() override { return nullptr; }
 
 public:
 
-    unsigned int
-    nPorts(QtNodes::PortType portType) const override;
+	unsigned int
+	nPorts(QtNodes::PortType portType) const override;
 
-    QtNodes::NodeDataType
-    dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
+	QtNodes::NodeDataType
+	dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const override;
 
-    std::shared_ptr<QtNodes::NodeData>
-    outData(QtNodes::PortIndex port) override;
+	std::shared_ptr<QtNodes::NodeData>
+	outData(QtNodes::PortIndex port) override;
 
-    ConnectionPolicy
-    portInConnectionPolicy(QtNodes::PortIndex) const override
-    {
-      return ConnectionPolicy::Many;
-    }
+	ConnectionPolicy
+	portInConnectionPolicy(QtNodes::PortIndex) const override
+	{
+		return ConnectionPolicy::Many;
+	}
 
-    void
-    setInData(std::shared_ptr<QtNodes::NodeData> data, int) override {}
+	void
+	setInData(std::shared_ptr<QtNodes::NodeData> data, int) override {}
 
-    void
-    setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override {}
+	void
+	setInData(std::shared_ptr<QtNodes::NodeData> data, int, const QUuid& connectionId) override {}
 
-    ConnectionPolicy
-    portOutConnectionPolicy(QtNodes::PortIndex) const
-    {
-      return ConnectionPolicy::One;
-    }
+	ConnectionPolicy
+	portOutConnectionPolicy(QtNodes::PortIndex) const
+	{
+		return ConnectionPolicy::One;
+	}
 
 private:
-  std::shared_ptr<ExecutionData> _execution;
-  std::vector<std::pair<QUuid, int>> inputExecution;
+	std::shared_ptr<ExecutionData> _execution;
+	std::vector<std::pair<QUuid, int>> inputExecution;
 };
 
 #endif // SPLITEXECUTIONDATAMODEL_H
