@@ -68,10 +68,13 @@ bool PositionModel::setData(const QModelIndex &index, const QVariant &value, int
         switch (role) {
             case Qt::EditRole | PositionRoles::TypeRole:
                 m_markerList[index.row()].setType(qvariant_cast<MarkerType>(value));
+                break;
             case Qt::EditRole | PositionRoles::PositionRole:
                 m_markerList[index.row()].setCoords(qvariant_cast<QVector3D>(value));
+                break;
             case Qt:: EditRole | PositionRoles::RotationRole:
                 m_markerList[index.row()].setRotation(qvariant_cast<QVector3D>(value));
+                break;
         }
         emit dataChanged(index, index, {role});
         return true;
