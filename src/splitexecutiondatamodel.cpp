@@ -1,13 +1,8 @@
 #include "splitexecutiondatamodel.h"
 
-SplitExecutionDataModel::SplitExecutionDataModel()
-{
+SplitExecutionDataModel::SplitExecutionDataModel() {}
 
-}
-
-unsigned int
-SplitExecutionDataModel::
-nPorts(QtNodes::PortType portType) const
+unsigned int SplitExecutionDataModel::nPorts(QtNodes::PortType portType) const
 {
 	unsigned int result = 1;
 
@@ -27,14 +22,11 @@ nPorts(QtNodes::PortType portType) const
 	return result;
 }
 
-QtNodes::NodeDataType
-SplitExecutionDataModel::
-dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
+QtNodes::NodeDataType SplitExecutionDataModel::dataType(QtNodes::PortType portType, QtNodes::PortIndex portIndex) const
 {
 	return ExecutionData().type();
 }
-std::shared_ptr<QtNodes::NodeData>
-SplitExecutionDataModel::outData(QtNodes::PortIndex portIndex)
+std::shared_ptr<QtNodes::NodeData> SplitExecutionDataModel::outData(QtNodes::PortIndex portIndex)
 {
 
 	return std::static_pointer_cast<QtNodes::NodeData>(_execution);

@@ -12,151 +12,157 @@
 namespace QtNodes
 {
 
-class NodeState;
-class NodeDataModel;
-class Node;
+	class NodeState;
+	class NodeDataModel;
+	class Node;
 
-class NODE_EDITOR_PUBLIC NodeGeometry
-{
-public:
+	class NODE_EDITOR_PUBLIC NodeGeometry
+	{
+	  public:
+		NodeGeometry(std::unique_ptr<NodeDataModel> const& dataModel);
 
-  NodeGeometry(std::unique_ptr<NodeDataModel> const &dataModel);
+	  public:
+		unsigned int height() const
+		{
+			return _height;
+		}
 
-public:
-  unsigned int
-  height() const { return _height; }
+		void setHeight(unsigned int h)
+		{
+			_height = h;
+		}
 
-  void
-  setHeight(unsigned int h) { _height = h; }
+		unsigned int width() const
+		{
+			return _width;
+		}
 
-  unsigned int
-  width() const { return _width; }
+		void setWidth(unsigned int w)
+		{
+			_width = w;
+		}
 
-  void
-  setWidth(unsigned int w) { _width = w; }
+		unsigned int entryHeight() const
+		{
+			return _entryHeight;
+		}
+		void setEntryHeight(unsigned int h)
+		{
+			_entryHeight = h;
+		}
 
-  unsigned int
-  entryHeight() const { return _entryHeight; }
-  void
-  setEntryHeight(unsigned int h) { _entryHeight = h; }
+		unsigned int entryWidth() const
+		{
+			return _entryWidth;
+		}
 
-  unsigned int
-  entryWidth() const { return _entryWidth; }
+		void setEntryWidth(unsigned int w)
+		{
+			_entryWidth = w;
+		}
 
-  void
-  setEntryWidth(unsigned int w) { _entryWidth = w; }
+		unsigned int spacing() const
+		{
+			return _spacing;
+		}
 
-  unsigned int
-  spacing() const { return _spacing; }
+		void setSpacing(unsigned int s)
+		{
+			_spacing = s;
+		}
 
-  void
-  setSpacing(unsigned int s) { _spacing = s; }
+		bool hovered() const
+		{
+			return _hovered;
+		}
 
-  bool
-  hovered() const { return _hovered; }
+		void setHovered(unsigned int h)
+		{
+			_hovered = h;
+		}
 
-  void
-  setHovered(unsigned int h) { _hovered = h; }
+		unsigned int nSources() const;
 
-  unsigned int
-  nSources() const;
+		unsigned int nSinks() const;
 
-  unsigned int
-  nSinks() const;
+		QPointF const& draggingPos() const
+		{
+			return _draggingPos;
+		}
 
-  QPointF const&
-  draggingPos() const
-  { return _draggingPos; }
+		void setDraggingPosition(QPointF const& pos)
+		{
+			_draggingPos = pos;
+		}
 
-  void
-  setDraggingPosition(QPointF const& pos)
-  { _draggingPos = pos; }
+	  public:
+		QRectF entryBoundingRect() const;
 
-public:
+		QRectF boundingRect() const;
 
-  QRectF
-  entryBoundingRect() const;
+		/// Updates size unconditionally
+		void recalculateSize() const;
 
-  QRectF
-  boundingRect() const;
+		/// Updates size if the QFontMetrics is changed
+		void recalculateSize(QFont const& font) const;
 
-  /// Updates size unconditionally
-  void
-  recalculateSize() const;
+		// TODO removed default QTransform()
+		QPointF portScenePosition(PortIndex index, PortType portType, QTransform const& t = QTransform()) const;
 
-  /// Updates size if the QFontMetrics is changed
-  void
-  recalculateSize(QFont const &font) const;
+		PortIndex checkHitScenePoint(PortType portType, QPointF point, QTransform const& t = QTransform()) const;
 
-  // TODO removed default QTransform()
-  QPointF
-  portScenePosition(PortIndex index,
-                    PortType portType,
-                    QTransform const & t = QTransform()) const;
+		QRect resizeRect() const;
 
-  PortIndex
-  checkHitScenePoint(PortType portType,
-                     QPointF point,
-                     QTransform const & t = QTransform()) const;
+		/// Returns the position of a widget on the Node surface
+		QPointF widgetPosition() const;
 
-  QRect
-  resizeRect() const;
+		/// Returns the maximum height a widget can be without causing the node to grow.
+		int equivalentWidgetHeight() const;
 
-  /// Returns the position of a widget on the Node surface
-  QPointF
-  widgetPosition() const;
+		unsigned int validationHeight() const;
 
-  /// Returns the maximum height a widget can be without causing the node to grow.
-  int
-  equivalentWidgetHeight() const;
+		unsigned int validationWidth() const;
 
-  unsigned int
-  validationHeight() const;
+		static QPointF calculateNodePositionBetweenNodePorts(
+			PortIndex targetPortIndex,
+			PortType targetPort,
+			Node* targetNode,
+			PortIndex sourcePortIndex,
+			PortType sourcePort,
+			Node* sourceNode,
+			Node& newNode);
 
-  unsigned int
-  validationWidth() const;
-  
-  static 
-  QPointF 
-  calculateNodePositionBetweenNodePorts(PortIndex targetPortIndex, PortType targetPort, Node* targetNode,
-                                        PortIndex sourcePortIndex, PortType sourcePort, Node* sourceNode,
-                                        Node& newNode);
-private:
+	  private:
+		unsigned int captionHeight() const;
 
-  unsigned int
-  captionHeight() const;
+		unsigned int captionWidth() const;
 
-  unsigned int
-  captionWidth() const;
+		unsigned int portWidth(PortType portType) const;
 
-  unsigned int
-  portWidth(PortType portType) const;
+	  private:
+		// some variables are mutable because
+		// we need to change drawing metrics
+		// corresponding to fontMetrics
+		// but this doesn't change constness of Node
 
-private:
+		mutable unsigned int _width;
+		mutable unsigned int _height;
+		unsigned int _entryWidth;
+		mutable unsigned int _inputPortWidth;
+		mutable unsigned int _outputPortWidth;
+		mutable unsigned int _entryHeight;
+		unsigned int _spacing;
 
-  // some variables are mutable because
-  // we need to change drawing metrics
-  // corresponding to fontMetrics
-  // but this doesn't change constness of Node
+		bool _hovered;
 
-  mutable unsigned int _width;
-  mutable unsigned int _height;
-  unsigned int _entryWidth;
-  mutable unsigned int _inputPortWidth;
-  mutable unsigned int _outputPortWidth;
-  mutable unsigned int _entryHeight;
-  unsigned int _spacing;
+		unsigned int _nSources;
+		unsigned int _nSinks;
 
-  bool _hovered;
+		QPointF _draggingPos;
 
-  unsigned int _nSources;
-  unsigned int _nSinks;
+		std::unique_ptr<NodeDataModel> const& _dataModel;
 
-  QPointF _draggingPos;
-
-  std::unique_ptr<NodeDataModel> const &_dataModel;
-
-  mutable QFontMetrics _fontMetrics;
-  mutable QFontMetrics _boldFontMetrics;
-};
-}
+		mutable QFontMetrics _fontMetrics;
+		mutable QFontMetrics _boldFontMetrics;
+	};
+} // namespace QtNodes

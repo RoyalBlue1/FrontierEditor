@@ -3,21 +3,21 @@
 
 #include "spawntitandatamodel.h"
 
-
 class SpawnNukeTitanDataModel : public SpawnTitanDataModel
 {
 	Q_OBJECT
-public:
+  public:
 	SpawnNukeTitanDataModel();
 
 	QString caption() const override
-	{ return QStringLiteral("Spawn Nuke Titan"); }
-
-
+	{
+		return QStringLiteral("Spawn Nuke Titan");
+	}
 
 	QString name() const override
-	{ return QStringLiteral("NukeTitan"); }
-
+	{
+		return QStringLiteral("NukeTitan");
+	}
 };
 
 #endif // SPAWNNUKETITANDATAMODEL_H

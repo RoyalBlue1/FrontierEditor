@@ -11,303 +11,264 @@
 
 #include "StyleCollection.hpp"
 
-
-using QtNodes::ConnectionPainter;
-using QtNodes::ConnectionGeometry;
 using QtNodes::Connection;
+using QtNodes::ConnectionGeometry;
+using QtNodes::ConnectionPainter;
 
-
-static
-QPainterPath
-cubicPath(ConnectionGeometry const& geom)
+static QPainterPath cubicPath(ConnectionGeometry const& geom)
 {
-  QPointF const& source = geom.source();
-  QPointF const& sink   = geom.sink();
+	QPointF const& source = geom.source();
+	QPointF const& sink = geom.sink();
 
-  auto c1c2 = geom.pointsC1C2();
+	auto c1c2 = geom.pointsC1C2();
 
-  // cubic spline
-  QPainterPath cubic(source);
+	// cubic spline
+	QPainterPath cubic(source);
 
-  cubic.cubicTo(c1c2.first, c1c2.second, sink);
+	cubic.cubicTo(c1c2.first, c1c2.second, sink);
 
-  return cubic;
+	return cubic;
 }
 
-
-QPainterPath
-ConnectionPainter::
-getPainterStroke(ConnectionGeometry const& geom)
+QPainterPath ConnectionPainter::getPainterStroke(ConnectionGeometry const& geom)
 {
-  auto cubic = cubicPath(geom);
+	auto cubic = cubicPath(geom);
 
-  QPointF const& source = geom.source();
-  QPainterPath result(source);
+	QPointF const& source = geom.source();
+	QPainterPath result(source);
 
-  unsigned segments = 20;
+	unsigned segments = 20;
 
-  for (auto i = 0ul; i < segments; ++i)
-  {
-    double ratio = double(i + 1) / segments;
-    result.lineTo(cubic.pointAtPercent(ratio));
-  }
+	for (auto i = 0ul; i < segments; ++i)
+	{
+		double ratio = double(i + 1) / segments;
+		result.lineTo(cubic.pointAtPercent(ratio));
+	}
 
-  QPainterPathStroker stroker; stroker.setWidth(10.0);
+	QPainterPathStroker stroker;
+	stroker.setWidth(10.0);
 
-  return stroker.createStroke(result);
+	return stroker.createStroke(result);
 }
-
 
 #ifdef NODE_DEBUG_DRAWING
-static
-void
-debugDrawing(QPainter * painter,
-             Connection const & connection)
+static void debugDrawing(QPainter* painter, Connection const& connection)
 {
-  Q_UNUSED(painter);
-  Q_UNUSED(connection);
-  ConnectionGeometry const& geom =
-    connection.connectionGeometry();
+	Q_UNUSED(painter);
+	Q_UNUSED(connection);
+	ConnectionGeometry const& geom = connection.connectionGeometry();
 
-  {
-    QPointF const& source = geom.source();
-    QPointF const& sink   = geom.sink();
+	{
+		QPointF const& source = geom.source();
+		QPointF const& sink = geom.sink();
 
-    auto points = geom.pointsC1C2();
+		auto points = geom.pointsC1C2();
 
-    painter->setPen(Qt::red);
-    painter->setBrush(Qt::red);
+		painter->setPen(Qt::red);
+		painter->setBrush(Qt::red);
 
-    painter->drawLine(QLineF(source, points.first));
-    painter->drawLine(QLineF(points.first, points.second));
-    painter->drawLine(QLineF(points.second, sink));
-    painter->drawEllipse(points.first, 3, 3);
-    painter->drawEllipse(points.second, 3, 3);
+		painter->drawLine(QLineF(source, points.first));
+		painter->drawLine(QLineF(points.first, points.second));
+		painter->drawLine(QLineF(points.second, sink));
+		painter->drawEllipse(points.first, 3, 3);
+		painter->drawEllipse(points.second, 3, 3);
 
-    painter->setBrush(Qt::NoBrush);
+		painter->setBrush(Qt::NoBrush);
 
-    painter->drawPath(cubicPath(geom));
-  }
+		painter->drawPath(cubicPath(geom));
+	}
 
-  {
-    painter->setPen(Qt::yellow);
+	{
+		painter->setPen(Qt::yellow);
 
-    painter->drawRect(geom.boundingRect());
-  }
+		painter->drawRect(geom.boundingRect());
+	}
 }
 #endif
 
-static
-void
-drawSketchLine(QPainter * painter,
-               Connection const & connection)
+static void drawSketchLine(QPainter* painter, Connection const& connection)
 {
-  using QtNodes::ConnectionState;
+	using QtNodes::ConnectionState;
 
-  ConnectionState const& state =
-    connection.connectionState();
+	ConnectionState const& state = connection.connectionState();
 
-  if (state.requiresPort())
-  {
-    auto const & connectionStyle =
-      QtNodes::StyleCollection::connectionStyle();
+	if (state.requiresPort())
+	{
+		auto const& connectionStyle = QtNodes::StyleCollection::connectionStyle();
 
-    QPen p;
-    p.setWidth(connectionStyle.constructionLineWidth());
-    p.setColor(connectionStyle.constructionColor());
-    p.setStyle(Qt::DashLine);
+		QPen p;
+		p.setWidth(connectionStyle.constructionLineWidth());
+		p.setColor(connectionStyle.constructionColor());
+		p.setStyle(Qt::DashLine);
 
-    painter->setPen(p);
-    painter->setBrush(Qt::NoBrush);
+		painter->setPen(p);
+		painter->setBrush(Qt::NoBrush);
 
-    using QtNodes::ConnectionGeometry;
-    ConnectionGeometry const& geom = connection.connectionGeometry();
+		using QtNodes::ConnectionGeometry;
+		ConnectionGeometry const& geom = connection.connectionGeometry();
 
-    auto cubic = cubicPath(geom);
-    // cubic spline
-    painter->drawPath(cubic);
-  }
+		auto cubic = cubicPath(geom);
+		// cubic spline
+		painter->drawPath(cubic);
+	}
 }
 
-static
-void
-drawHoveredOrSelected(QPainter * painter,
-                      Connection const & connection)
+static void drawHoveredOrSelected(QPainter* painter, Connection const& connection)
 {
-  using QtNodes::ConnectionGeometry;
+	using QtNodes::ConnectionGeometry;
 
-  ConnectionGeometry const& geom = connection.connectionGeometry();
-  bool const hovered = geom.hovered();
+	ConnectionGeometry const& geom = connection.connectionGeometry();
+	bool const hovered = geom.hovered();
 
-  auto const& graphicsObject =
-    connection.getConnectionGraphicsObject();
+	auto const& graphicsObject = connection.getConnectionGraphicsObject();
 
-  bool const selected = graphicsObject.isSelected();
+	bool const selected = graphicsObject.isSelected();
 
-  // drawn as a fat background
-  if (hovered || selected)
-  {
-    QPen p;
+	// drawn as a fat background
+	if (hovered || selected)
+	{
+		QPen p;
 
-    auto const &connectionStyle =
-      QtNodes::StyleCollection::connectionStyle();
-    double const lineWidth     = connectionStyle.lineWidth();
+		auto const& connectionStyle = QtNodes::StyleCollection::connectionStyle();
+		double const lineWidth = connectionStyle.lineWidth();
 
-    p.setWidth(2 * lineWidth);
-    p.setColor(selected ?
-               connectionStyle.selectedHaloColor() :
-               connectionStyle.hoveredColor());
+		p.setWidth(2 * lineWidth);
+		p.setColor(selected ? connectionStyle.selectedHaloColor() : connectionStyle.hoveredColor());
 
-    painter->setPen(p);
-    painter->setBrush(Qt::NoBrush);
+		painter->setPen(p);
+		painter->setBrush(Qt::NoBrush);
 
-    // cubic spline
-    auto cubic = cubicPath(geom);
-    painter->drawPath(cubic);
-  }
+		// cubic spline
+		auto cubic = cubicPath(geom);
+		painter->drawPath(cubic);
+	}
 }
 
-
-static
-void
-drawNormalLine(QPainter * painter,
-               Connection const & connection)
+static void drawNormalLine(QPainter* painter, Connection const& connection)
 {
-  using QtNodes::ConnectionState;
+	using QtNodes::ConnectionState;
 
-  ConnectionState const& state =
-    connection.connectionState();
+	ConnectionState const& state = connection.connectionState();
 
-  if (state.requiresPort())
-    return;
+	if (state.requiresPort())
+		return;
 
-  // colors
+	// colors
 
-  auto const &connectionStyle =
-    QtNodes::StyleCollection::connectionStyle();
+	auto const& connectionStyle = QtNodes::StyleCollection::connectionStyle();
 
-  QColor normalColorOut  = connectionStyle.normalColor();
-  QColor normalColorIn   = connectionStyle.normalColor();
-  QColor selectedColor = connectionStyle.selectedColor();
+	QColor normalColorOut = connectionStyle.normalColor();
+	QColor normalColorIn = connectionStyle.normalColor();
+	QColor selectedColor = connectionStyle.selectedColor();
 
-  bool gradientColor = false;
+	bool gradientColor = false;
 
-  if (connectionStyle.useDataDefinedColors())
-  {
-    using QtNodes::PortType;
+	if (connectionStyle.useDataDefinedColors())
+	{
+		using QtNodes::PortType;
 
-    auto dataTypeOut = connection.dataType(PortType::Out);
-    auto dataTypeIn = connection.dataType(PortType::In);
+		auto dataTypeOut = connection.dataType(PortType::Out);
+		auto dataTypeIn = connection.dataType(PortType::In);
 
-    gradientColor = (dataTypeOut.id != dataTypeIn.id);
+		gradientColor = (dataTypeOut.id != dataTypeIn.id);
 
-    normalColorOut  = connectionStyle.normalColor(dataTypeOut.color);
-    normalColorIn   = connectionStyle.normalColor(dataTypeIn.color);
-    selectedColor = normalColorOut.darker(200);
-  }
+		normalColorOut = connectionStyle.normalColor(dataTypeOut.color);
+		normalColorIn = connectionStyle.normalColor(dataTypeIn.color);
+		selectedColor = normalColorOut.darker(200);
+	}
 
-  // geometry
+	// geometry
 
-  ConnectionGeometry const& geom = connection.connectionGeometry();
+	ConnectionGeometry const& geom = connection.connectionGeometry();
 
-  double const lineWidth = connectionStyle.lineWidth();
+	double const lineWidth = connectionStyle.lineWidth();
 
-  // draw normal line
-  QPen p;
+	// draw normal line
+	QPen p;
 
-  p.setWidth(lineWidth);
+	p.setWidth(lineWidth);
 
-  auto const& graphicsObject = connection.getConnectionGraphicsObject();
-  bool const selected = graphicsObject.isSelected();
+	auto const& graphicsObject = connection.getConnectionGraphicsObject();
+	bool const selected = graphicsObject.isSelected();
 
+	auto cubic = cubicPath(geom);
+	if (gradientColor)
+	{
+		painter->setBrush(Qt::NoBrush);
 
-  auto cubic = cubicPath(geom);
-  if (gradientColor)
-  {
-    painter->setBrush(Qt::NoBrush);
+		QColor cOut = normalColorOut;
+		if (selected)
+			cOut = cOut.darker(200);
+		p.setColor(cOut);
+		painter->setPen(p);
 
-    QColor cOut = normalColorOut;
-    if (selected)
-      cOut = cOut.darker(200);
-    p.setColor(cOut);
-    painter->setPen(p);
+		unsigned int const segments = 60;
 
-    unsigned int const segments = 60;
+		for (unsigned int i = 0ul; i < segments; ++i)
+		{
+			double ratioPrev = double(i) / segments;
+			double ratio = double(i + 1) / segments;
 
-    for (unsigned int i = 0ul; i < segments; ++i)
-    {
-      double ratioPrev = double(i) / segments;
-      double ratio = double(i + 1) / segments;
+			if (i == segments / 2)
+			{
+				QColor cIn = normalColorIn;
+				if (selected)
+					cIn = cIn.darker(200);
 
-      if (i == segments / 2)
-      {
-        QColor cIn = normalColorIn;
-        if (selected)
-          cIn = cIn.darker(200);
+				p.setColor(cIn);
+				painter->setPen(p);
+			}
+			painter->drawLine(cubic.pointAtPercent(ratioPrev), cubic.pointAtPercent(ratio));
+		}
 
-        p.setColor(cIn);
-        painter->setPen(p);
-      }
-      painter->drawLine(cubic.pointAtPercent(ratioPrev),
-                        cubic.pointAtPercent(ratio));
-    }
+		{
+			QIcon icon(":convert.png");
 
-    {
-      QIcon icon(":convert.png");
+			QPixmap pixmap = icon.pixmap(QSize(22, 22));
+			painter->drawPixmap(cubic.pointAtPercent(0.50) - QPoint(pixmap.width() / 2, pixmap.height() / 2), pixmap);
+		}
+	}
+	else
+	{
+		p.setColor(normalColorOut);
 
-      QPixmap pixmap = icon.pixmap(QSize(22, 22));
-      painter->drawPixmap(cubic.pointAtPercent(0.50) - QPoint(pixmap.width()/2,
-                                                              pixmap.height()/2),
-                          pixmap);
+		if (selected)
+		{
+			p.setColor(selectedColor);
+		}
 
-    }
-  }
-  else
-  {
-    p.setColor(normalColorOut);
+		painter->setPen(p);
+		painter->setBrush(Qt::NoBrush);
 
-    if (selected)
-    {
-      p.setColor(selectedColor);
-    }
-
-    painter->setPen(p);
-    painter->setBrush(Qt::NoBrush);
-
-    painter->drawPath(cubic);
-  }
+		painter->drawPath(cubic);
+	}
 }
 
-
-void
-ConnectionPainter::
-paint(QPainter* painter,
-      Connection const &connection)
+void ConnectionPainter::paint(QPainter* painter, Connection const& connection)
 {
-  drawHoveredOrSelected(painter, connection);
+	drawHoveredOrSelected(painter, connection);
 
-  drawSketchLine(painter, connection);
+	drawSketchLine(painter, connection);
 
-  drawNormalLine(painter, connection);
+	drawNormalLine(painter, connection);
 
 #ifdef NODE_DEBUG_DRAWING
-  debugDrawing(painter, connection);
+	debugDrawing(painter, connection);
 #endif
 
-  // draw end points
-  ConnectionGeometry const& geom = connection.connectionGeometry();
+	// draw end points
+	ConnectionGeometry const& geom = connection.connectionGeometry();
 
-  QPointF const & source = geom.source();
-  QPointF const & sink   = geom.sink();
+	QPointF const& source = geom.source();
+	QPointF const& sink = geom.sink();
 
-  auto const & connectionStyle =
-    QtNodes::StyleCollection::connectionStyle();
+	auto const& connectionStyle = QtNodes::StyleCollection::connectionStyle();
 
-  double const pointDiameter = connectionStyle.pointDiameter();
+	double const pointDiameter = connectionStyle.pointDiameter();
 
-  painter->setPen(connectionStyle.constructionColor());
-  painter->setBrush(connectionStyle.constructionColor());
-  double const pointRadius = pointDiameter / 2.0;
-  painter->drawEllipse(source, pointRadius, pointRadius);
-  painter->drawEllipse(sink, pointRadius, pointRadius);
+	painter->setPen(connectionStyle.constructionColor());
+	painter->setBrush(connectionStyle.constructionColor());
+	double const pointRadius = pointDiameter / 2.0;
+	painter->drawEllipse(source, pointRadius, pointRadius);
+	painter->drawEllipse(sink, pointRadius, pointRadius);
 }

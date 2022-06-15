@@ -6,8 +6,8 @@
 
 #endif // GAMEMAP_H
 
-
-enum class GameMap {
+enum class GameMap
+{
 	AngelCity,
 	BlackWaterCanal,
 	Coliseum,
@@ -44,8 +44,7 @@ static const QMap<GameMap, QString> mapFileNames {
 	{GameMap::Relic, "mp_relic02"},
 	{GameMap::Rise, "mp_rise"},
 	{GameMap::Thaw, "mp_thaw"},
-	{GameMap::Wargames, "mp_wargames"}
-};
+	{GameMap::Wargames, "mp_wargames"}};
 
 const std::map<GameMap, std::array<float, 3>> transformMap {
 	{GameMap::AngelCity, {-6516, 6633, 11.353f}},
@@ -64,5 +63,4 @@ const std::map<GameMap, std::array<float, 3>> transformMap {
 	{GameMap::Relic, {-7428, 2375, 15}},
 	{GameMap::Rise, {-7558, 7399, 12}},
 	{GameMap::Thaw, {-5046, 5515, 11.188f}},
-	{GameMap::Wargames, {-5923, 5105, 9.5f}}
-};
+	{GameMap::Wargames, {-5923, 5105, 9.5f}}};

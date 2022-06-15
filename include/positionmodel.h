@@ -6,7 +6,8 @@
 #include <QVector3D>
 #include <QIcon>
 
-enum PositionRoles {
+enum PositionRoles
+{
 	TypeRole = 32,
 	PositionRole = 64,
 	RotationRole = 128
@@ -16,29 +17,28 @@ class PositionModel : public QAbstractListModel
 {
 	Q_OBJECT
 
-public:
-	explicit PositionModel(QObject *parent = nullptr);
+  public:
+	explicit PositionModel(QObject* parent = nullptr);
 
 	// Basic functionality:
-	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 	QList<MapMarker> getMarkers();
 	// Editable:
-	bool setData(const QModelIndex &index, const QVariant &value,
-				 int role = Qt::EditRole) override;
+	bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
 	std::pair<MapMarker, QModelIndex> getClosest(QPointF point);
 	Qt::ItemFlags flags(const QModelIndex& index) const override;
 
 	// Add data:
-public slots:
+  public slots:
 	void addMarker(MapMarker marker);
 
 	// Remove data:
-	bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+	bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
 	void populateTest();
 
-private:
+  private:
 	QList<MapMarker> m_markerList;
 	QMap<MarkerType, QIcon> m_iconMap;
 };

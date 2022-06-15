@@ -10,7 +10,8 @@
 #include <QIcon>
 #include "gamemap.h"
 
-enum class MarkerType {
+enum class MarkerType
+{
 	Player,
 	Sniper,
 	MortarTitan,
@@ -35,18 +36,15 @@ static const QMap<MarkerType, QString> nameMap {
 	{MarkerType::Smoke, "Smoke"},
 	{MarkerType::Shop, "Shop"},
 	{MarkerType::Route, "Route"},
-	{MarkerType::Prop, "Prop"}
-};
-
-
+	{MarkerType::Prop, "Prop"}};
 
 class MapMarker
 {
-public:
+  public:
 	MapMarker() = default;
 	~MapMarker() = default;
-	MapMarker(const MapMarker &marker) = default;
-	MapMarker &operator=(const MapMarker &) = default;
+	MapMarker(const MapMarker& marker) = default;
+	MapMarker& operator=(const MapMarker&) = default;
 	MapMarker(QVector3D coords, GameMap map, MarkerType type);
 	MapMarker(QVector3D coords, QVector3D rotation, GameMap map, MarkerType type);
 	operator QString();
@@ -61,8 +59,7 @@ public:
 	void setRotation(QVector3D rotation);
 	void setType(MarkerType type);
 
-
-private:
+  private:
 	MarkerType m_type;
 	QVector3D m_coords;
 	QVector3D m_rotation;

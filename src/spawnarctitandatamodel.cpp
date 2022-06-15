@@ -1,6 +1,3 @@
 #include "spawnarctitandatamodel.h"
 
-SpawnArcTitanDataModel::SpawnArcTitanDataModel()
-{
-
-}
+SpawnArcTitanDataModel::SpawnArcTitanDataModel() {}

@@ -20,147 +20,104 @@ class QPointF;
 namespace QtNodes
 {
 
-class Node;
-class NodeData;
-class ConnectionGraphicsObject;
+	class Node;
+	class NodeData;
+	class ConnectionGraphicsObject;
 
-///
-class NODE_EDITOR_PUBLIC Connection
-  : public QObject
-  , public Serializable
-{
+	///
+	class NODE_EDITOR_PUBLIC Connection : public QObject, public Serializable
+	{
 
-  Q_OBJECT
+		Q_OBJECT
 
-public:
+	  public:
+		/// New Connection is attached to the port of the given Node.
+		/// The port has parameters (portType, portIndex).
+		/// The opposite connection end will require anothre port.
+		Connection(PortType portType, Node& node, PortIndex portIndex);
 
-  /// New Connection is attached to the port of the given Node.
-  /// The port has parameters (portType, portIndex).
-  /// The opposite connection end will require anothre port.
-  Connection(PortType portType,
-             Node& node,
-             PortIndex portIndex);
+		Connection(Node& nodeIn, PortIndex portIndexIn, Node& nodeOut, PortIndex portIndexOut, TypeConverter converter = TypeConverter {});
 
-  Connection(Node& nodeIn,
-             PortIndex portIndexIn,
-             Node& nodeOut,
-             PortIndex portIndexOut,
-             TypeConverter converter =
-               TypeConverter{});
+		Connection(const Connection&) = delete;
+		Connection operator=(const Connection&) = delete;
 
-  Connection(const Connection&) = delete;
-  Connection operator=(const Connection&) = delete;
+		~Connection();
 
-  ~Connection();
+	  public:
+		QJsonObject save() const override;
 
-public:
+	  public:
+		QUuid id() const;
 
-  QJsonObject
-  save() const override;
+		/// Remembers the end being dragged.
+		/// Invalidates Node address.
+		/// Grabs mouse.
+		void setRequiredPort(PortType portType);
+		PortType requiredPort() const;
 
-public:
+		void setGraphicsObject(std::unique_ptr<ConnectionGraphicsObject>&& graphics);
 
-  QUuid
-  id() const;
+		/// Assigns a node to the required port.
+		/// It is assumed that there is a required port, no extra checks
+		void setNodeToPort(Node& node, PortType portType, PortIndex portIndex);
 
-  /// Remembers the end being dragged.
-  /// Invalidates Node address.
-  /// Grabs mouse.
-  void
-  setRequiredPort(PortType portType);
-  PortType
-  requiredPort() const;
+		void removeFromNodes() const;
 
-  void
-  setGraphicsObject(std::unique_ptr<ConnectionGraphicsObject>&& graphics);
+	  public:
+		ConnectionGraphicsObject& getConnectionGraphicsObject() const;
 
-  /// Assigns a node to the required port.
-  /// It is assumed that there is a required port, no extra checks
-  void
-  setNodeToPort(Node& node,
-                PortType portType,
-                PortIndex portIndex);
+		ConnectionState const& connectionState() const;
+		ConnectionState& connectionState();
 
-  void
-  removeFromNodes() const;
+		ConnectionGeometry& connectionGeometry();
 
-public:
+		ConnectionGeometry const& connectionGeometry() const;
 
-  ConnectionGraphicsObject&
-  getConnectionGraphicsObject() const;
+		Node* getNode(PortType portType) const;
 
-  ConnectionState const &
-  connectionState() const;
-  ConnectionState&
-  connectionState();
+		Node*& getNode(PortType portType);
 
-  ConnectionGeometry&
-  connectionGeometry();
+		PortIndex getPortIndex(PortType portType) const;
 
-  ConnectionGeometry const&
-  connectionGeometry() const;
+		void clearNode(PortType portType);
 
-  Node*
-  getNode(PortType portType) const;
+		NodeDataType dataType(PortType portType) const;
 
-  Node*&
-  getNode(PortType portType);
+		void setTypeConverter(TypeConverter converter);
 
-  PortIndex
-  getPortIndex(PortType portType) const;
+		bool complete() const;
 
-  void
-  clearNode(PortType portType);
+	  public: // data propagation
+		void propagateData(std::shared_ptr<NodeData> nodeData) const;
 
-  NodeDataType
-  dataType(PortType portType) const;
+		void propagateEmptyData() const;
 
-  void
-  setTypeConverter(TypeConverter converter);
+	  Q_SIGNALS:
 
-  bool
-  complete() const;
+		void connectionCompleted(Connection const&) const;
 
-public: // data propagation
+		void connectionMadeIncomplete(Connection const&) const;
 
-  void
-  propagateData(std::shared_ptr<NodeData> nodeData) const;
+	  private:
+		QUuid _uid;
 
-  void
-  propagateEmptyData() const;
+	  private:
+		Node* _outNode = nullptr;
+		Node* _inNode = nullptr;
 
-Q_SIGNALS:
+		PortIndex _outPortIndex;
+		PortIndex _inPortIndex;
 
-  void
-  connectionCompleted(Connection const&) const;
+	  private:
+		ConnectionState _connectionState;
+		ConnectionGeometry _connectionGeometry;
 
-  void
-  connectionMadeIncomplete(Connection const&) const;
+		std::unique_ptr<ConnectionGraphicsObject> _connectionGraphicsObject;
 
-private:
+		TypeConverter _converter;
 
-  QUuid _uid;
+	  Q_SIGNALS:
 
-private:
-
-  Node* _outNode = nullptr;
-  Node* _inNode  = nullptr;
-
-  PortIndex _outPortIndex;
-  PortIndex _inPortIndex;
-
-private:
-
-  ConnectionState    _connectionState;
-  ConnectionGeometry _connectionGeometry;
-
-  std::unique_ptr<ConnectionGraphicsObject>_connectionGraphicsObject;
-
-  TypeConverter _converter;
-
-Q_SIGNALS:
-
-  void
-  updated(Connection& conn) const;
-};
-}
+		void updated(Connection& conn) const;
+	};
+} // namespace QtNodes

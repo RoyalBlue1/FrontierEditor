@@ -1,6 +1,3 @@
 #include "spawnnuketitandatamodel.h"
 
-SpawnNukeTitanDataModel::SpawnNukeTitanDataModel()
-{
-
-}
+SpawnNukeTitanDataModel::SpawnNukeTitanDataModel() {}
