@@ -132,49 +132,57 @@ void FlowView::contextMenuEvent(QContextMenuEvent* event)
 
 	treeView->expandAll();
 
-	connect(treeView, &QTreeWidget::itemClicked, [&](QTreeWidgetItem* item, int) {
-		QString modelName = item->data(0, Qt::UserRole).toString();
-
-		if (modelName == skipText)
+	connect(
+		treeView,
+		&QTreeWidget::itemClicked,
+		[&](QTreeWidgetItem* item, int)
 		{
-			return;
-		}
+			QString modelName = item->data(0, Qt::UserRole).toString();
 
-		auto type = _scene->registry().create(modelName);
+			if (modelName == skipText)
+			{
+				return;
+			}
 
-		if (type)
-		{
-			auto& node = _scene->createNode(std::move(type));
+			auto type = _scene->registry().create(modelName);
 
-			QPoint pos = event->pos();
+			if (type)
+			{
+				auto& node = _scene->createNode(std::move(type));
 
-			QPointF posView = this->mapToScene(pos);
+				QPoint pos = event->pos();
 
-			node.nodeGraphicsObject().setPos(posView);
+				QPointF posView = this->mapToScene(pos);
 
-			_scene->nodePlaced(node);
-		}
-		else
-		{
-			qDebug() << "Model not found";
-		}
+				node.nodeGraphicsObject().setPos(posView);
 
-		modelMenu.close();
-	});
+				_scene->nodePlaced(node);
+			}
+			else
+			{
+				qDebug() << "Model not found";
+			}
+
+			modelMenu.close();
+		});
 
 	// Setup filtering
-	connect(txtBox, &QLineEdit::textChanged, [&](const QString& text) {
-		for (auto& topLvlItem : topLevelItems)
+	connect(
+		txtBox,
+		&QLineEdit::textChanged,
+		[&](const QString& text)
 		{
-			for (int i = 0; i < topLvlItem->childCount(); ++i)
+			for (auto& topLvlItem : topLevelItems)
 			{
-				auto child = topLvlItem->child(i);
-				auto modelName = child->data(0, Qt::UserRole).toString();
-				const bool match = (modelName.contains(text, Qt::CaseInsensitive));
-				child->setHidden(!match);
+				for (int i = 0; i < topLvlItem->childCount(); ++i)
+				{
+					auto child = topLvlItem->child(i);
+					auto modelName = child->data(0, Qt::UserRole).toString();
+					const bool match = (modelName.contains(text, Qt::CaseInsensitive));
+					child->setHidden(!match);
+				}
 			}
-		}
-	});
+		});
 
 	// make sure the text box gets focus so the user doesn't have to click on it
 	txtBox->setFocus();
@@ -299,7 +307,8 @@ void FlowView::drawBackground(QPainter* painter, const QRectF& r)
 {
 	QGraphicsView::drawBackground(painter, r);
 
-	auto drawGrid = [&](double gridStep) {
+	auto drawGrid = [&](double gridStep)
+	{
 		QRect windowRect = rect();
 		QPointF tl = mapToScene(windowRect.topLeft());
 		QPointF br = mapToScene(windowRect.bottomRight());

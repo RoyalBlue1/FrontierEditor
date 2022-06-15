@@ -199,14 +199,18 @@ bool NodeConnectionInteraction::nodePortIsEmpty(PortType portType, PortIndex por
 	// Check if the connection already exists connected to the respective
 	// input and output ports
 	auto sourcePortType = oppositePort(portType);
-	auto it = std::find_if(connections.begin(), connections.end(), [this, sourcePortType](const auto& connection) {
-		const auto* const currentConn = connection.second;
+	auto it = std::find_if(
+		connections.begin(),
+		connections.end(),
+		[this, sourcePortType](const auto& connection)
+		{
+			const auto* const currentConn = connection.second;
 
-		assert(_connection->getNode(sourcePortType));
-		assert(currentConn->getNode(sourcePortType));
-		return _connection->getNode(sourcePortType) == currentConn->getNode(sourcePortType) &&
-			   _connection->getPortIndex(sourcePortType) == currentConn->getPortIndex(sourcePortType);
-	});
+			assert(_connection->getNode(sourcePortType));
+			assert(currentConn->getNode(sourcePortType));
+			return _connection->getNode(sourcePortType) == currentConn->getNode(sourcePortType) &&
+				   _connection->getPortIndex(sourcePortType) == currentConn->getPortIndex(sourcePortType);
+		});
 	if (it != connections.end())
 		return false;
 

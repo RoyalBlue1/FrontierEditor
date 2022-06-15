@@ -109,7 +109,8 @@ std::shared_ptr<Connection> FlowScene::restoreConnection(QJsonObject const& conn
 	auto nodeIn = _nodes[nodeInId].get();
 	auto nodeOut = _nodes[nodeOutId].get();
 
-	auto getConverter = [&]() {
+	auto getConverter = [&]()
+	{
 		QJsonValue converterVal = connectionJson["converter"];
 
 		if (!converterVal.isUndefined())
@@ -235,7 +236,8 @@ void FlowScene::iterateOverNodeDataDependentOrder(std::function<void(NodeDataMod
 	std::set<QUuid> visitedNodesSet;
 
 	// A leaf node is a node with no input ports, or all possible input ports empty
-	auto isNodeLeaf = [](Node const& node, NodeDataModel const& model) {
+	auto isNodeLeaf = [](Node const& node, NodeDataModel const& model)
+	{
 		for (unsigned int i = 0; i < model.nPorts(PortType::In); ++i)
 		{
 			auto connections = node.nodeState().connections(PortType::In, i);
@@ -261,7 +263,8 @@ void FlowScene::iterateOverNodeDataDependentOrder(std::function<void(NodeDataMod
 		}
 	}
 
-	auto areNodeInputsVisitedBefore = [&](Node const& node, NodeDataModel const& model) {
+	auto areNodeInputsVisitedBefore = [&](Node const& node, NodeDataModel const& model)
+	{
 		for (size_t i = 0; i < model.nPorts(PortType::In); ++i)
 		{
 			auto connections = node.nodeState().connections(PortType::In, static_cast<PortIndex>(i));
@@ -328,9 +331,11 @@ std::vector<Node*> FlowScene::allNodes() const
 {
 	std::vector<Node*> nodes;
 
-	std::transform(_nodes.begin(), _nodes.end(), std::back_inserter(nodes), [](std::pair<QUuid const, std::unique_ptr<Node>> const& p) {
-		return p.second.get();
-	});
+	std::transform(
+		_nodes.begin(),
+		_nodes.end(),
+		std::back_inserter(nodes),
+		[](std::pair<QUuid const, std::unique_ptr<Node>> const& p) { return p.second.get(); });
 
 	return nodes;
 }
@@ -502,9 +507,11 @@ namespace QtNodes
 		//// items convertable to NodeGraphicsObject
 		std::vector<QGraphicsItem*> filteredItems;
 
-		std::copy_if(items.begin(), items.end(), std::back_inserter(filteredItems), [](QGraphicsItem* item) {
-			return (dynamic_cast<NodeGraphicsObject*>(item) != nullptr);
-		});
+		std::copy_if(
+			items.begin(),
+			items.end(),
+			std::back_inserter(filteredItems),
+			[](QGraphicsItem* item) { return (dynamic_cast<NodeGraphicsObject*>(item) != nullptr); });
 
 		Node* resultNode = nullptr;
 

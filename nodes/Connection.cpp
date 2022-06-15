@@ -78,7 +78,8 @@ QJsonObject Connection::save() const
 
 		if (_converter)
 		{
-			auto getTypeJson = [this](PortType type) {
+			auto getTypeJson = [this](PortType type)
+			{
 				QJsonObject typeJson;
 				NodeDataType nodeType = this->dataType(type);
 				typeJson["id"] = nodeType.id;

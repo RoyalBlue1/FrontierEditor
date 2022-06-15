@@ -62,10 +62,15 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 		iter++;
 	}
 	ui->typeComboBox->setCurrentIndex(-1);
-	connect(ui->typeComboBox, &QComboBox::currentIndexChanged, this, [this]() {
-		QModelIndex index = markerSelectionModel->currentIndex();
-		positionModel->setData(index, ui->typeComboBox->currentData(), Qt::EditRole | PositionRoles::TypeRole);
-	});
+	connect(
+		ui->typeComboBox,
+		&QComboBox::currentIndexChanged,
+		this,
+		[this]()
+		{
+			QModelIndex index = markerSelectionModel->currentIndex();
+			positionModel->setData(index, ui->typeComboBox->currentData(), Qt::EditRole | PositionRoles::TypeRole);
+		});
 	connect(ui->xCoordSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onPositionChange);
 	connect(ui->yCoordSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onPositionChange);
 	connect(ui->zCoordSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onPositionChange);

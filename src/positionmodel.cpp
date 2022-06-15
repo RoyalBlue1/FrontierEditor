@@ -86,10 +86,14 @@ std::pair<MapMarker, QModelIndex> PositionModel::getClosest(QPointF point)
 
 	std::generate(indicies.begin(), indicies.end(), [i = -1]() mutable { return ++i; }); // vector of[0...n] of markers list indicies
 
-	std::sort(indicies.begin(), indicies.end(), [&list = m_markerList, point](const int a, const int b) {
-		// sort index vector
-		return distance(list[a].minimapCoords(), point) < distance(list[b].minimapCoords(), point);
-	});
+	std::sort(
+		indicies.begin(),
+		indicies.end(),
+		[&list = m_markerList, point](const int a, const int b)
+		{
+			// sort index vector
+			return distance(list[a].minimapCoords(), point) < distance(list[b].minimapCoords(), point);
+		});
 	//    qDebug() << indicies;
 	return std::make_pair(m_markerList[indicies[0]], index(indicies[0]));
 }
