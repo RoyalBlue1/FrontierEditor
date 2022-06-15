@@ -74,11 +74,13 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
 	connect(ui->yRotSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onRotationChange);
 	connect(ui->zRotSpinBox, &QDoubleSpinBox::valueChanged, this, &MainWindow::onRotationChange);
 
+	tcpHandler = new TCPHandler(QHostAddress::LocalHost, 20062);
 }
 
 MainWindow::~MainWindow()
 {
 	delete ui;
+	delete tcpHandler;
 }
 
 void MainWindow::onMarkerSelect(const QItemSelection& selected, const QItemSelection&)

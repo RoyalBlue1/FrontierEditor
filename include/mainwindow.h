@@ -12,6 +12,7 @@
 #include "nodes/DataModelRegistry.hpp"
 #include "positionmodel.h"
 #include "nodes/ConnectionStyle.hpp"
+#include "tcphandler.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -36,5 +37,6 @@ class MainWindow : public QMainWindow
 	Ui::MainWindow* ui;
 	PositionModel* positionModel;
 	QItemSelectionModel* markerSelectionModel;
+	TCPHandler* tcpHandler;
 };
 #endif // MAINWINDOW_H

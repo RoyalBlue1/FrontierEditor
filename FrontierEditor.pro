@@ -15,6 +15,7 @@ SOURCES += \
     src/mainwindow.cpp \
     src/mapmarker.cpp \
     src/minimapgraphicsview.cpp \
+    src/tcphandler.cpp \
     nodes/Connection.cpp \
     nodes/ConnectionBlurEffect.cpp \
     nodes/ConnectionGeometry.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     include/enddatamodel.h \
     include/mainwindow.h \
     include/spawntitandatamodel.h \
+    include/tcphandler.h \
     nodes/Compiler.hpp \
     nodes/Connection.hpp \
     nodes/ConnectionBlurEffect.hpp \
